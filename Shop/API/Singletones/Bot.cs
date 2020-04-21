@@ -25,16 +25,8 @@ namespace Shop.API.Singletones
         {
             await Client.DeleteWebhookAsync();
 
-            var hook = string.Format(AppSettings.Url, @"api/message/Update");
-            try
-            {
-                await Client.SetWebhookAsync(hook);
-                WebHookInfo = await Client.GetWebhookInfoAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            await Client.SetWebhookAsync(AppSettings.WebHookUrl);
+            WebHookInfo = await Client.GetWebhookInfoAsync();
         }
     }
 }
