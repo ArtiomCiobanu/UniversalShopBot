@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Shop.API.Commands;
 using Shop.API.Singletones;
 using Telegram.Bot.Types;
 
@@ -47,7 +48,7 @@ namespace Shop.Controllers
 
             foreach (var c in commands)
             {
-                if (c.Contains(message.Text))
+                if (c.MustBeExecutedForMessage(message))
                 {
                     c.Execute(message, client);
                     break;

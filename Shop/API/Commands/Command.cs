@@ -12,12 +12,12 @@ namespace Shop.API.Commands
     {
         public abstract string Name { get; }
         public abstract void Execute(Message message, TelegramBotClient client);
+        public virtual bool MustBeExecutedForMessage(Message message) => Contains(message.Text.Split().First());
         public bool Contains(string command)
         {
             StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase;
 
             return command.Contains(Name, stringComparison);// && command.Contains(AppSettings.Name);
         }
-
     }
 }

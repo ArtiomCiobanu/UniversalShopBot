@@ -15,7 +15,8 @@ namespace Shop.API.Singletones
         static List<Command> commandsList = new List<Command>
         {
             new HelloCommand(),
-            new StartCommand()
+            new StartCommand(),
+            new OrderCommand()
         };
         public static IReadOnlyList<Command> Commands => commandsList.AsReadOnly();
 
