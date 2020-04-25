@@ -12,7 +12,7 @@ namespace Shop.API.Singletones
     {
         public static readonly TelegramBotClient Client = new TelegramBotClient(AppSettings.Token);
 
-        static List<Command> commandsList = new List<Command>
+        static readonly List<Command> commandsList = new List<Command>
         {
             new HelloCommand(),
             new StartCommand(),
@@ -28,6 +28,10 @@ namespace Shop.API.Singletones
 
             await Client.SetWebhookAsync(AppSettings.WebHookUrl);
             WebHookInfo = await Client.GetWebhookInfoAsync();
+        }
+        public static async Task DeleteWebhook()
+        {
+            await Client.DeleteWebhookAsync();
         }
     }
 }

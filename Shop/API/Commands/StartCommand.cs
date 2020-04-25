@@ -11,10 +11,9 @@ namespace Shop.API.Commands
     {
         public override string Name => "start";
 
-        public override async void Execute(Message message, TelegramBotClient client)
+        public override async void Execute(Update update, TelegramBotClient client)
         {
-            var chatId = message.Chat.Id;
-            var messageId = message.MessageId;
+            var chatId = update.Message.Chat.Id;
 
             await client.SendTextMessageAsync(chatId, "Здравствуйте!");
         }

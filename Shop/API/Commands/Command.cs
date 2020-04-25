@@ -11,8 +11,12 @@ namespace Shop.API.Commands
     public abstract class Command
     {
         public abstract string Name { get; }
-        public abstract void Execute(Message message, TelegramBotClient client);
-        public virtual bool MustBeExecutedForMessage(Message message) => Contains(message.Text.Split().First());
+        public abstract void Execute(Update update, TelegramBotClient client);
+        public virtual bool MustBeExecutedForUpdate(Update update)
+        {
+            return (update.Message != null) ? Contains(update.Message.Text.Split().First()) : false;
+        }
+
         public bool Contains(string command)
         {
             StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase;

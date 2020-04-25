@@ -12,27 +12,36 @@ namespace Shop.API.Commands
     {
         public List<IStep> AwaitedSteps = new List<IStep>();
         public abstract IStep GetInitialStep(Message chatId);
-        public override bool MustBeExecutedForMessage(Message message)
+        public override bool MustBeExecutedForUpdate(Update update)
         {
-            return Contains(message.Text.Split().First()) || AwaitedSteps.Any(step => step.ChatId == message.Chat.Id);
-        }
-        public override async void Execute(Message message, TelegramBotClient client)
-        {
-            var chatId = message.Chat.Id;
-            var messageId = message.MessageId;
+            var message = update.Message;
+            var callback = update.CallbackQuery;
 
-            var step = AwaitedSteps.SingleOrDefault(x => x.ChatId == chatId);
-
-            if (step != null)
+            if (callback != null)
             {
+                var id = callback.Message.Chat.Id;
+            }
+
+            return (callback != null && AwaitedSteps.Any(step => step.ChatId == callback.Message.Chat.Id)) ||
+                Contains(message.Text.Split().First());
+        }
+        public override async void Execute(Update update, TelegramBotClient client)
+        {
+            var message = update.Message;
+            var callback = update.CallbackQuery;
+
+            IStep step = null;
+            if (callback != null)
+            {
+                step = AwaitedSteps.SingleOrDefault(x => x.ChatId == callback.Message.Chat.Id);
                 AwaitedSteps.Remove(step);
             }
-            else
+            else if (message != null)
             {
                 step = GetInitialStep(message);
             }
 
-            await step.Execute(client);
+            await step.Execute(update, client);
             if (step.NextStep != null)
             {
                 AwaitedSteps.Add(step.NextStep);

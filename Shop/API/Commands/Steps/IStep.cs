@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot;
+using Telegram.Bot.Types;
 
 namespace Shop.API.Commands.Steps
 {
@@ -12,6 +13,6 @@ namespace Shop.API.Commands.Steps
         long ChatId { get; }
         string Message { get; }
         IStep NextStep { get; }
-        Task Execute(TelegramBotClient client);
+        Task Execute(Update update, TelegramBotClient client);
     }
 }

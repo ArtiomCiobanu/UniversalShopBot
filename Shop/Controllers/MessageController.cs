@@ -36,26 +36,28 @@ namespace Shop.Controllers
 
             return Ok(Bot.WebHookInfo);
         }
+        [HttpGet]
+        public async Task<OkObjectResult> DeleteWebhook()
+        {
+            await Bot.DeleteWebhook();
+
+            return Ok(Bot.WebHookInfo);
+        }
+
 
         [HttpPost]
-        public OkResult Update([FromBody]JsonElement input)
+        public void Update([FromBody]JsonElement input)
         {
             Update update = JsonConvert.DeserializeObject<Update>(input.ToString());
 
-            var commands = Bot.Commands;
-            var message = update.Message;
-            var client = Bot.Client;
-
-            foreach (var c in commands)
+            foreach (var c in Bot.Commands)
             {
-                if (c.MustBeExecutedForMessage(message))
+                if (c.MustBeExecutedForUpdate(update))
                 {
-                    c.Execute(message, client);
+                    c.Execute(update, Bot.Client);
                     break;
                 }
             }
-
-            return Ok();
         }
     }
 }
