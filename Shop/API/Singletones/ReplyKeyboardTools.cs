@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Shop.API.Singletones
@@ -22,6 +19,15 @@ namespace Shop.API.Singletones
             }
 
             return buttons.ToArray();
+        }
+
+        public static InlineKeyboardButton[] GetCategoriesButtonRow()
+        {
+            return GetKeyboardButtonRow(Catalogue.Categories);
+        }
+        public static InlineKeyboardButton[] GetProductsButtonRow(string category)
+        {
+            return GetKeyboardButtonRow(Catalogue.Products[category]);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Shop.API.Models;
+using Shop.API.Singletones;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -8,21 +8,27 @@ using Telegram.Bot.Types;
 
 namespace Shop.API.Commands.Steps.OrderSteps
 {
-    public class SpecifyPhoneStep : IOrderStep
+    public class SpecifyPhoneStep : OrderStep
     {
-        public OrderData Data => throw new NotImplementedException();
+        public new string Message => "Теперь введите свой номер телефона:";
 
-        public long ChatId => throw new NotImplementedException();
-
-        public string Message => throw new NotImplementedException();
-
-        public IStep NextStep => throw new NotImplementedException();
-
-        public Task Execute(Update update, TelegramBotClient client)
+        public override async Task Execute(Update update, TelegramBotClient client)
         {
+            var callback = update.CallbackQuery;
+            var callbackMessage = callback.Message;
+            var selectedProduct = callback.Data;
+            var category = Data.Category;
 
+            Data.Product = Catalogue.Products[category].FirstOrDefault(x => x.Value == selectedProduct).Key;
 
-            throw new NotImplementedException();
+            NextStep = new SpecifyAdressStep(ChatId, Data);
+
+            await client.EditMessageTextAsync(callbackMessage.Chat.Id, callbackMessage.MessageId,
+                $"Вы выбрали:\n{Data.Product} - {category}\n{Message}", replyMarkup: null);
+        }
+
+        public SpecifyPhoneStep(long chatId, OrderData data) : base(chatId, data)
+        {
         }
     }
 }

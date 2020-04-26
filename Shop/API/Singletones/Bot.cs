@@ -1,10 +1,8 @@
 ﻿using Shop.API.Commands;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
 
 namespace Shop.API.Singletones
 {
