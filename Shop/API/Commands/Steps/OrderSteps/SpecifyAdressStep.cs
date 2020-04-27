@@ -10,7 +10,7 @@ namespace Shop.API.Commands.Steps.OrderSteps
 {
     public class SpecifyAdressStep : OrderStep
     {
-        public new string Message => "Теперь введите свой адрес:";
+        public override string Message => "Теперь введите свой адрес:";
 
         public override async Task Execute(Update update, TelegramBotClient client)
         {
@@ -20,7 +20,7 @@ namespace Shop.API.Commands.Steps.OrderSteps
 
             NextStep = new ConfirmOrderStep(ChatId, Data);
 
-            await client.SendTextMessageAsync(message.Chat.Id,
+            await client.SendTextMessageAsync(ChatId,
                 $"Вы выбрали:\n" +
                 $"{Data.Category} - {Data.Product}\n" +
                 $"Ваш телефон: {Data.PhoneNumber}\n" +

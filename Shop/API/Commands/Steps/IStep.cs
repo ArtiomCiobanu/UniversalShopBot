@@ -1,10 +1,7 @@
-﻿using Shop.API.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Shop.API.Commands.Steps
 {
@@ -13,6 +10,9 @@ namespace Shop.API.Commands.Steps
         long ChatId { get; }
         string Message { get; }
         IStep NextStep { get; }
+        TelegramBotClient BotClient { get; }
         Task Execute(Update update, TelegramBotClient client);
+        Task SendMessage(string message, InlineKeyboardMarkup replyMarkup = null);
+        Task EditMessage(string message, InlineKeyboardMarkup replyMarkup = null);
     }
 }

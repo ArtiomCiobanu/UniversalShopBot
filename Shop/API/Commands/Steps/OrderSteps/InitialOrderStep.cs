@@ -10,7 +10,7 @@ namespace Shop.API.Commands.Steps
 {
     public class InitialOrderStep : OrderStep
     {
-        public new string Message => "Отлично! Выберите категорию:";
+        public override string Message => "Отлично! Выберите категорию:";
 
         public override async Task Execute(Update update, TelegramBotClient client)
         {

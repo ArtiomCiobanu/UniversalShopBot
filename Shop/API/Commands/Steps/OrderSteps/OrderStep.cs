@@ -5,29 +5,21 @@ using Telegram.Bot.Types;
 
 namespace Shop.API.Commands.Steps.OrderSteps
 {
-    public abstract class OrderStep : IStep
+    public abstract class OrderStep : Step
     {
         public OrderData Data { get; }
-        public long ChatId { get; }
-        public string Message { get; }
-        public IStep NextStep { get; set; } = null;
 
-        public abstract Task Execute(Update update, TelegramBotClient client);
-
-        public OrderStep(Message message)
+        public OrderStep(Message message) : base(message.Chat.Id)
         {
-            ChatId = message.Chat.Id;
             Data = new OrderData(message.Chat.FirstName, message.Chat.LastName);
         }
-        public OrderStep(Message message, OrderData data)
+        public OrderStep(Message message, OrderData data) : base(message.Chat.Id)
         {
-            ChatId = message.Chat.Id;
             Data = data;
         }
-        public OrderStep(long chatId, OrderData data)
+        public OrderStep(long chatId, OrderData data) : base(chatId)
         {
             Data = data;
-            ChatId = chatId;
         }
     }
 }

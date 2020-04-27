@@ -11,7 +11,7 @@ namespace Shop.API.Commands.Steps.OrderSteps
 {
     public class ConfirmOrderStep : OrderStep
     {
-        public new string Message => "Всё правильно? Тогда можете подтвердить оформление заказа:";
+        public override string Message => "Всё правильно? Тогда можете подтвердить оформление заказа:";
 
         public override async Task Execute(Update update, TelegramBotClient client)
         {
@@ -27,11 +27,12 @@ namespace Shop.API.Commands.Steps.OrderSteps
                 CallbackData = "Confirmed"
             });
 
-            await client.SendTextMessageAsync(message.Chat.Id,
+            await client.SendTextMessageAsync(ChatId,
                 $"Итого:\n" +
+                $"Вас зовут: {Data.FullName}\n" +
                 $"Ваш заказ: {Data.Category} - {Data.Product}\n" +
-                $"Ваш телефон: {Data.PhoneNumber}\n" +
-                $"Ваш адрес: {Data.Adress}\n" +
+                $"Телефон: {Data.PhoneNumber}\n" +
+                $"Адрес: {Data.Adress}\n" +
                 $"{Message}",
                 replyMarkup: keyboard);
         }

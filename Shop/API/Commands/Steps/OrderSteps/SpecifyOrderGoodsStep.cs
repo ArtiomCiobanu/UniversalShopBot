@@ -11,7 +11,7 @@ namespace Shop.API.Commands.Steps.OrderSteps
 {
     public class SpecifyOrderGoodsStep : OrderStep
     {
-        public new string Message => "Теперь выберите товар:";
+        public override string Message => "Теперь выберите товар:";
 
         public override async Task Execute(Update update, TelegramBotClient client)
         {
@@ -24,7 +24,7 @@ namespace Shop.API.Commands.Steps.OrderSteps
 
             var keyboard = new InlineKeyboardMarkup(ReplyKeyboardTools.GetProductsButtonRow(Data.Category));
 
-            await client.EditMessageTextAsync(callbackMessage.Chat.Id, callbackMessage.MessageId,
+            await client.EditMessageTextAsync(ChatId, callbackMessage.MessageId,
                 $"Вы выбрали Категорию {callback.Data}\n{Message}", replyMarkup: keyboard);
         }
         public SpecifyOrderGoodsStep(long chatId, OrderData data) : base(chatId, data)
