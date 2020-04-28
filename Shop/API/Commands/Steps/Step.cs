@@ -17,13 +17,13 @@ namespace Shop.API.Commands.Steps
 
         public abstract Task Execute(Update update, TelegramBotClient client);
 
-        public Task SendMessage(string message, InlineKeyboardMarkup replyMarkup = null)
+        public async Task SendMessageAsync(string message, InlineKeyboardMarkup replyKeyboardMarkup = null)
         {
-            throw new NotImplementedException();
+            await BotClient.SendTextMessageAsync(ChatId, message, replyMarkup: replyKeyboardMarkup);
         }
-        public Task EditMessage(string message, InlineKeyboardMarkup replyMarkup = null)
+        public async Task EditMessageAsync(string message, CallbackQuery callback, InlineKeyboardMarkup replyKeyboardMarkup = null)
         {
-            throw new NotImplementedException();
+            await BotClient.EditMessageTextAsync(ChatId, callback.Message.MessageId, message, replyMarkup: replyKeyboardMarkup);
         }
 
         public Step()

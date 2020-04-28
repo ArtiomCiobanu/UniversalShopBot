@@ -20,14 +20,13 @@ namespace Shop.API.Commands.Steps.OrderSteps
             var selectedItem = int.Parse(callback.Data) - 1;
 
             Data.Category = Catalogue.Categories.FirstOrDefault(x => x.Value == callback.Data).Key;
-            NextStep = new SpecifyPhoneStep(ChatId, Data);
+            NextStep = new SpecifyPhoneStep(ChatId, BotClient, Data);
 
             var keyboard = new InlineKeyboardMarkup(ReplyKeyboardTools.GetProductsButtonRow(Data.Category));
 
-            await client.EditMessageTextAsync(ChatId, callbackMessage.MessageId,
-                $"Вы выбрали Категорию {callback.Data}\n{Message}", replyMarkup: keyboard);
+            await EditMessageAsync($"Вы выбрали Категорию {callback.Data}\n{Message}", callback, keyboard);
         }
-        public SpecifyOrderGoodsStep(long chatId, OrderData data) : base(chatId, data)
+        public SpecifyOrderGoodsStep(long chatId, TelegramBotClient client, OrderData data) : base(chatId, client, data)
         {
         }
     }

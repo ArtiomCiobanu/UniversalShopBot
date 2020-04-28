@@ -18,16 +18,15 @@ namespace Shop.API.Commands.Steps.OrderSteps
 
             Data.PhoneNumber = message.Text;
 
-            NextStep = new ConfirmOrderStep(ChatId, Data);
+            NextStep = new ConfirmOrderStep(ChatId, BotClient, Data);
 
-            await client.SendTextMessageAsync(ChatId,
-                $"Вы выбрали:\n" +
+            await SendMessageAsync($"Вы выбрали:\n" +
                 $"{Data.Category} - {Data.Product}\n" +
                 $"Ваш телефон: {Data.PhoneNumber}\n" +
                 $"{Message}");
         }
 
-        public SpecifyAdressStep(long chatId, OrderData data) : base(chatId, data)
+        public SpecifyAdressStep(long chatId, TelegramBotClient client, OrderData data) : base(chatId, client, data)
         {
         }
     }

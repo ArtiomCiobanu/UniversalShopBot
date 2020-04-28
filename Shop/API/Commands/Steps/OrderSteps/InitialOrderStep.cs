@@ -14,14 +14,14 @@ namespace Shop.API.Commands.Steps
 
         public override async Task Execute(Update update, TelegramBotClient client)
         {
-            NextStep = new SpecifyOrderGoodsStep(ChatId, Data);
+            NextStep = new SpecifyOrderGoodsStep(ChatId, BotClient, Data);
 
             var keyboard = new InlineKeyboardMarkup(ReplyKeyboardTools.GetCategoriesButtonRow());
 
-            await client.SendTextMessageAsync(ChatId, Message, replyMarkup: keyboard);
+            await SendMessageAsync(Message, keyboard);
         }
 
-        public InitialOrderStep(Message message) : base(message)
+        public InitialOrderStep(Message message, TelegramBotClient client) : base(message, client)
         {
         }
     }

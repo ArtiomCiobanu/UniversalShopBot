@@ -19,7 +19,7 @@ namespace Shop.API.Commands.Steps.OrderSteps
 
             Data.Adress = message.Text;
 
-            NextStep = new FinishOrderStep(ChatId, Data);
+            NextStep = new FinishOrderStep(ChatId, BotClient, Data);
 
             var keyboard = new InlineKeyboardMarkup(new InlineKeyboardButton()
             {
@@ -27,17 +27,16 @@ namespace Shop.API.Commands.Steps.OrderSteps
                 CallbackData = "Confirmed"
             });
 
-            await client.SendTextMessageAsync(ChatId,
-                $"Итого:\n" +
-                $"Вас зовут: {Data.FullName}\n" +
-                $"Ваш заказ: {Data.Category} - {Data.Product}\n" +
-                $"Телефон: {Data.PhoneNumber}\n" +
-                $"Адрес: {Data.Adress}\n" +
-                $"{Message}",
-                replyMarkup: keyboard);
+            await SendMessageAsync($"Итого:\n" +
+                 $"Вас зовут: {Data.FullName}\n" +
+                 $"Ваш заказ: {Data.Category} - {Data.Product}\n" +
+                 $"Телефон: {Data.PhoneNumber}\n" +
+                 $"Адрес: {Data.Adress}\n" +
+                 $"{Message}",
+                 keyboard);
         }
 
-        public ConfirmOrderStep(long chatId, OrderData data) : base(chatId, data)
+        public ConfirmOrderStep(long chatId, TelegramBotClient client, OrderData data) : base(chatId, client, data)
         {
 
         }

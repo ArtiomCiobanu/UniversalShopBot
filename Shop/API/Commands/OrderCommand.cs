@@ -11,6 +11,6 @@ namespace Shop.API.Commands
     public class OrderCommand : MultiStepCommand
     {
         public override string Name => "order";
-        public override IStep GetInitialStep(Message message) => new InitialOrderStep(message);
+        public override IStep GetInitialStep(Message message, TelegramBotClient client) => new InitialOrderStep(message, client);
     }
 }

@@ -21,13 +21,12 @@ namespace Shop.API.Commands.Steps.OrderSteps
 
             Data.Product = Catalogue.Products[category].FirstOrDefault(x => x.Value == selectedProduct).Key;
 
-            NextStep = new SpecifyAdressStep(ChatId, Data);
+            NextStep = new SpecifyAdressStep(ChatId, BotClient, Data);
 
-            await client.EditMessageTextAsync(ChatId, callbackMessage.MessageId,
-                $"Вы выбрали:\n{Data.Product} - {category}\n{Message}", replyMarkup: null);
+            await EditMessageAsync($"Вы выбрали:\n{Data.Product} - {category}\n{Message}", callback);
         }
 
-        public SpecifyPhoneStep(long chatId, OrderData data) : base(chatId, data)
+        public SpecifyPhoneStep(long chatId, TelegramBotClient client, OrderData data) : base(chatId, client, data)
         {
         }
     }

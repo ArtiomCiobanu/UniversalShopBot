@@ -12,7 +12,7 @@ namespace Shop.API.Commands.Steps
         IStep NextStep { get; }
         TelegramBotClient BotClient { get; }
         Task Execute(Update update, TelegramBotClient client);
-        Task SendMessage(string message, InlineKeyboardMarkup replyMarkup = null);
-        Task EditMessage(string message, InlineKeyboardMarkup replyMarkup = null);
+        Task SendMessageAsync(string message, InlineKeyboardMarkup replyMarkup = null);
+        Task EditMessageAsync(string message, CallbackQuery callback, InlineKeyboardMarkup replyMarkup = null);
     }
 }

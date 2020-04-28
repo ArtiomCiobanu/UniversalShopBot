@@ -14,27 +14,26 @@ namespace Shop.API.Commands.Steps.OrderSteps
 
         public override async Task Execute(Update update, TelegramBotClient client)
         {
+            var callback = update.CallbackQuery;
             var callbackMessage = update.CallbackQuery.Message;
 
             if (update.CallbackQuery.Data == "Confirmed")
             {
-                await client.EditMessageTextAsync(callbackMessage.Chat.Id, callbackMessage.MessageId,
-                    $"Заказ оформлен!\n" +
+                await EditMessageAsync($"Заказ оформлен!\n" +
                     $"Вас зовут: {Data.FullName}\n" +
                     $"Ваш заказ: {Data.Category} - {Data.Product}\n" +
                     $"Телефон: {Data.PhoneNumber}\n" +
                     $"Адрес: {Data.Adress}\n" +
                     $"{Message}",
-                    replyMarkup: null);
+                    callback, null);
             }
             else
             {
-                await client.EditMessageTextAsync(callbackMessage.Chat.Id, callbackMessage.MessageId,
-                    "Оформите заказ заново.", replyMarkup: null);
+                await EditMessageAsync("Оформите заказ заново.", callback, null);
             }
         }
 
-        public FinishOrderStep(long chatId, OrderData data) : base(chatId, data)
+        public FinishOrderStep(long chatId, TelegramBotClient client, OrderData data) : base(chatId, client, data)
         {
 
         }

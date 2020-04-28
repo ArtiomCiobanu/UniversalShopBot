@@ -11,7 +11,7 @@ namespace Shop.API.Commands
     public abstract class MultiStepCommand : Command
     {
         public List<IStep> StepPool = new List<IStep>();
-        public abstract IStep GetInitialStep(Message chatId);
+        public abstract IStep GetInitialStep(Message chatId, TelegramBotClient client);
         public override bool MustBeExecutedForUpdate(Update update)
         {
             var message = update.Message;
@@ -45,7 +45,7 @@ namespace Shop.API.Commands
                     StepPool.Remove(duplicate);
                 }
 
-                step = GetInitialStep(message);
+                step = GetInitialStep(message, client);
             }
 
             await step.Execute(update, client);
