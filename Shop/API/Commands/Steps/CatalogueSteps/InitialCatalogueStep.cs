@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Shop.API.Singletones;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Shop.API.Commands.Steps.CatalogueSteps
 {
@@ -13,7 +12,13 @@ namespace Shop.API.Commands.Steps.CatalogueSteps
 
         public override async Task Execute(Update update, TelegramBotClient client)
         {
-            await client.SendTextMessageAsync(ChatId, "");
+            var keyboard = new InlineKeyboardMarkup(ReplyKeyboardTools.GetCategoriesButtonRow());
+
+            await SendMessageAsync(Message, keyboard);
+        }
+
+        public InitialCatalogueStep(Message message, TelegramBotClient client) : base(message, client)
+        {
         }
     }
 }

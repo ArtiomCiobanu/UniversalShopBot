@@ -1,7 +1,4 @@
 ﻿using Shop.API.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -15,7 +12,6 @@ namespace Shop.API.Commands.Steps.OrderSteps
         public override async Task Execute(Update update, TelegramBotClient client)
         {
             var callback = update.CallbackQuery;
-            var callbackMessage = update.CallbackQuery.Message;
 
             if (update.CallbackQuery.Data == "Confirmed")
             {

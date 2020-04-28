@@ -14,7 +14,8 @@ namespace Shop.API.Singletones
         {
             new HelloCommand(),
             new StartCommand(),
-            new OrderCommand()
+            new OrderCommand(),
+            new CatalogueCommand()
         };
         public static IReadOnlyList<Command> Commands => commandsList.AsReadOnly();
 

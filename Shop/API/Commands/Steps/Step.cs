@@ -34,6 +34,15 @@ namespace Shop.API.Commands.Steps
         {
             ChatId = chatId;
         }
+        public Step(Message message)
+        {
+            ChatId = message.Chat.Id;
+        }
+        public Step(Message message, TelegramBotClient client)
+        {
+            ChatId = message.Chat.Id;
+            BotClient = client;
+        }
         public Step(long chatId, TelegramBotClient client)
         {
             ChatId = chatId;

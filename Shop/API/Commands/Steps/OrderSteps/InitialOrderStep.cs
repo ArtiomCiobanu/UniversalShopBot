@@ -1,6 +1,5 @@
 ﻿using Shop.API.Commands.Steps.OrderSteps;
 using Shop.API.Singletones;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
