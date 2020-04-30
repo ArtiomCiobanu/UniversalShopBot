@@ -44,13 +44,9 @@ namespace Shop.Controllers
         {
             Update update = JsonConvert.DeserializeObject<Update>(input.ToString());
 
-            foreach (var c in Bot.Commands)
+            if (!Bot.FindCommandAndExecute(update))
             {
-                if (c.MustBeExecutedForUpdate(update))
-                {
-                    c.Execute(update, Bot.Client);
-                    break;
-                }
+                Bot.ExecuteCommandStepForUpdate(update);
             }
         }
     }

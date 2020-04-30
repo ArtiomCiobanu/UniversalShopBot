@@ -17,27 +17,18 @@ namespace Shop.API.Commands
             var message = update.Message;
             var callback = update.CallbackQuery;
 
-            return (callback != null && StepPool.Any(step => step.ChatId == callback.Message.Chat.Id)) ||
-                (message != null && StepPool.Any(step => step.ChatId == message.Chat.Id)) ||
-                Contains(message.Text.Split().First());
+            return ContainsCommandName(message) ||
+                (callback != null && StepPool.Any(step => step.ChatId == callback.Message.Chat.Id)) ||
+                (message != null && StepPool.Any(step => step.ChatId == message.Chat.Id));
         }
+
         public override async void Execute(Update update, TelegramBotClient client)
         {
             var message = update.Message;
             var callback = update.CallbackQuery;
 
             IStep step = null;
-            if (callback != null && StepPool.Any(s => s.ChatId == callback.Message.Chat.Id))
-            {
-                step = StepPool.SingleOrDefault(s => s.ChatId == callback.Message.Chat.Id);
-                StepPool.Remove(step);
-            }
-            else if (message != null && StepPool.Any(s => s.ChatId == message.Chat.Id))
-            {
-                step = StepPool.SingleOrDefault(s => s.ChatId == message.Chat.Id);
-                StepPool.Remove(step);
-            }
-            else if (Contains(message.Text.Split().First()))
+            if (ContainsCommandName(message))
             {
                 var duplicate = StepPool.SingleOrDefault(s => s.ChatId == message.Chat.Id);
                 if (duplicate != null)
@@ -46,6 +37,16 @@ namespace Shop.API.Commands
                 }
 
                 step = GetInitialStep(message, client);
+            }
+            else if (callback != null && StepPool.Any(s => s.ChatId == callback.Message.Chat.Id))
+            {
+                step = StepPool.SingleOrDefault(s => s.ChatId == callback.Message.Chat.Id);
+                StepPool.Remove(step);
+            }
+            else if (message != null && StepPool.Any(s => s.ChatId == message.Chat.Id))
+            {
+                step = StepPool.SingleOrDefault(s => s.ChatId == message.Chat.Id);
+                StepPool.Remove(step);
             }
 
             await step.Execute(update, client);

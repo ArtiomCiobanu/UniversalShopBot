@@ -1,5 +1,6 @@
 ﻿using Shop.API.Commands;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -15,7 +16,8 @@ namespace Shop.API.Singletones
             new HelloCommand(),
             new StartCommand(),
             new OrderCommand(),
-            new CatalogueCommand()
+            new CatalogueCommand(),
+            new HelpCommand()
         };
         public static IReadOnlyList<Command> Commands => commandsList.AsReadOnly();
 
@@ -31,6 +33,46 @@ namespace Shop.API.Singletones
         public static async Task DeleteWebhook()
         {
             await Client.DeleteWebhookAsync();
+        }
+        /// <summary>
+        /// Execude if begins with "/commandName"
+        /// </summary>
+        /// <param name="update"></param>
+        /// <param name="client"></param>
+        /// <returns></returns>
+        public static bool FindCommandAndExecute(Update update)
+        {
+            var command = FindCommandNameInMessage(update.Message);
+            if (command != null)
+            {
+                command.Execute(update, Client);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static void ExecuteCommandStepForUpdate(Update update)
+        {
+            foreach (var c in Commands)
+            {
+                if (c.MustBeExecutedForUpdate(update))
+                {
+                    c.Execute(update, Client);
+                    break;
+                }
+            }
+        }
+        public static Command FindCommandNameInMessage(Message message)
+        {
+            if (message == null)
+                return null;
+
+            var firstWord = message.Text.Split().First();
+            var foundCommand = Commands.SingleOrDefault(c => c.ContainsCommandName(firstWord));
+
+            return foundCommand;
         }
     }
 }

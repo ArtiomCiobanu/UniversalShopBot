@@ -11,14 +11,23 @@ namespace Shop.API.Commands
         public abstract void Execute(Update update, TelegramBotClient client);
         public virtual bool MustBeExecutedForUpdate(Update update)
         {
-            return (update.Message != null) ? Contains(update.Message.Text.Split().First()) : false;
+            return (update.Message != null) ? ContainsCommandName(update.Message) : false;
         }
 
-        public bool Contains(string command)
+        public bool ContainsCommandName(string messageText)
         {
             StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase;
 
-            return command.Contains(Name, stringComparison);// && command.Contains(AppSettings.Name);
+            return messageText.Contains(Name, stringComparison);// && command.Contains(AppSettings.Name);
+        }
+        public bool ContainsCommandName(Message message)
+        {
+            if (message == null)
+                return false;
+
+            StringComparison stringComparison = StringComparison.InvariantCultureIgnoreCase;
+
+            return message.Text.Split().First().Contains(Name, stringComparison);// && command.Contains(AppSettings.Name);
         }
     }
 }

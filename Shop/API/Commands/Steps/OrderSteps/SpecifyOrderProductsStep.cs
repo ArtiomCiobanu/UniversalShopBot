@@ -8,7 +8,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Shop.API.Commands.Steps.OrderSteps
 {
-    public class SpecifyOrderGoodsStep : OrderStep
+    public class SpecifyOrderProductsStep : OrderStep
     {
         public override string Message => "Теперь выберите товар:";
 
@@ -25,7 +25,7 @@ namespace Shop.API.Commands.Steps.OrderSteps
 
             await EditMessageAsync($"Вы выбрали Категорию {callback.Data}\n{Message}", callback, keyboard);
         }
-        public SpecifyOrderGoodsStep(long chatId, TelegramBotClient client, OrderData data) : base(chatId, client, data)
+        public SpecifyOrderProductsStep(long chatId, TelegramBotClient client, OrderData data) : base(chatId, client, data)
         {
         }
     }

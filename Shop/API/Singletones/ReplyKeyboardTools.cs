@@ -21,6 +21,24 @@ namespace Shop.API.Singletones
             return buttons.ToArray();
         }
 
+        public static InlineKeyboardButton[] GetKeyboardButtonAsArray()
+        {
+            return new InlineKeyboardButton[]
+            {
+                GetBackButton()
+            };
+        }
+        public static InlineKeyboardButton GetBackButton()
+        {
+            return new InlineKeyboardButton()
+            {
+                Text = "« Вернуться назад",
+                CallbackData = "Back"
+            };
+        }
+
+
+
         public static InlineKeyboardButton[] GetCategoriesButtonRow()
         {
             return GetKeyboardButtonRow(Catalogue.Categories);
