@@ -8,13 +8,13 @@ namespace Shop.API.Singletones
 {
     public static class Catalogue
     {
-        public static Category[] Categories => new Category[]
+        public static Category[] Categories => new[]
         {
             new Category("Категория 1", "1"),
             new Category("Категория 2", "2"),
             new Category("Категория 3", "3")
         };
-        public static Product[] Products => new Product[]
+        public static Product[] Products => new[]
         {
             new Product("1", "1", "Товар 1"),
             new Product("2", "1", "Товар 2"),

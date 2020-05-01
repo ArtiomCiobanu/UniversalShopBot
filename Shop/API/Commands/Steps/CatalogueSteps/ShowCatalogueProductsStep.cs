@@ -17,21 +17,13 @@ namespace Shop.API.Commands.Steps.CatalogueSteps
         public override async Task Execute(Update update, TelegramBotClient client)
         {
             var callback = update.CallbackQuery;
-
-            string selectedCategory = "";
-            if (callback != null && callback.Data == "Back")
-            {
-                selectedCategory = Catalogue.GetCategoryNameByProductId(Category);
-            }
-            else
-            {
-                selectedCategory = Catalogue.GetCategoryName(callback.Data);
-            }
+            var selectedCategory = (callback != null && callback.Data == "Back") ?
+                Catalogue.GetCategoryNameByProductId(Category) : Catalogue.GetCategoryName(callback.Data);
 
             var keyboard = new InlineKeyboardButton[][]
             {
                 ReplyKeyboardTools.GetProductsButtonRow(selectedCategory),
-                ReplyKeyboardTools.GetKeyboardButtonAsArray()
+                ReplyKeyboardTools.GetBackButton().ToArray()
             };
 
             NextStep = new DescribeProductStep(ChatId, client);

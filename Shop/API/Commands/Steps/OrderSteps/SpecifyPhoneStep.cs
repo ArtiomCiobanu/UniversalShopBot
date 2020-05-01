@@ -9,19 +9,16 @@ namespace Shop.API.Commands.Steps.OrderSteps
 {
     public class SpecifyPhoneStep : OrderStep
     {
-        public override string Message => "Теперь введите свой номер телефона:";
+        public override string Message => $"Вы выбрали:\n{Data.Product} - {Data.Category}\nТеперь введите свой номер телефона:";
 
         public override async Task Execute(Update update, TelegramBotClient client)
         {
             var callback = update.CallbackQuery;
-            var callbackMessage = callback.Message;
-            var selectedProductId = callback.Data;
-            var category = Data.Category;
 
-            Data.Product = Catalogue.GetProductName(selectedProductId);
+            Data.Product = Catalogue.GetProductName(callback.Data);
             NextStep = new SpecifyAdressStep(ChatId, BotClient, Data);
 
-            await EditMessageAsync($"Вы выбрали:\n{Data.Product} - {category}\n{Message}", callback);
+            await EditMessageAsync(Message, callback);
         }
 
         public SpecifyPhoneStep(long chatId, TelegramBotClient client, OrderData data) : base(chatId, client, data)

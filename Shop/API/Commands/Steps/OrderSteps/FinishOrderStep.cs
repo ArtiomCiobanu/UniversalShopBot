@@ -7,26 +7,20 @@ namespace Shop.API.Commands.Steps.OrderSteps
 {
     public class FinishOrderStep : OrderStep
     {
-        public override string Message => "Наш курьер скоро с вами свяжется.";
+        public override string Message => "Заказ оформлен! Наш курьер скоро с вами свяжется.";
+        public string CancellationMessage => "Вы отменили заказ.\nМожете оформить заново командой /order";
 
         public override async Task Execute(Update update, TelegramBotClient client)
         {
             var callback = update.CallbackQuery;
 
-            if (update.CallbackQuery.Data == "Confirmed")
+            if (callback.Data == "Confirmed")
             {
-                await EditMessageAsync($"Заказ оформлен!\n" +
-                    $"Вас зовут: {Data.FullName}\n" +
-                    $"Ваш заказ: {Data.Category} - {Data.Product}\n" +
-                    $"Телефон: {Data.PhoneNumber}\n" +
-                    $"Адрес: {Data.Adress}\n" +
-                    $"{Message}",
-                    callback, null);
-                //await SendMessageAsync(, callback, null);
+                await EditMessageAsync(Message, callback);
             }
-            else
+            else if (callback.Data == "Cancelled")
             {
-                await EditMessageAsync("Оформите заказ заново.", callback, null);
+                await EditMessageAsync(CancellationMessage, callback);
             }
         }
 

@@ -22,11 +22,28 @@ namespace Shop.API.Singletones
             return buttons.ToArray();
         }
 
-        public static InlineKeyboardButton[] GetKeyboardButtonAsArray()
+        public static InlineKeyboardButton[][] GetConfirmAndCancelButtons()
         {
-            return new InlineKeyboardButton[]
+            return new InlineKeyboardButton[][]
             {
-                GetBackButton()
+                GetConfirmationButton().ToArray(),
+                GetCancellationButton().ToArray()
+            };
+        }
+        public static InlineKeyboardButton GetConfirmationButton()
+        {
+            return new InlineKeyboardButton()
+            {
+                Text = "Подтвердить и оформить заказ",
+                CallbackData = "Confirmed"
+            };
+        }
+        public static InlineKeyboardButton GetCancellationButton()
+        {
+            return new InlineKeyboardButton()
+            {
+                Text = "Отмена",
+                CallbackData = "Cancelled"
             };
         }
         public static InlineKeyboardButton GetBackButton()
@@ -53,6 +70,14 @@ namespace Shop.API.Singletones
             Catalogue.Products.Where(c => c.CategoryId == categoryId).ToList().ForEach(c => d.Add(c.Name, c.Id));
 
             return GetKeyboardButtonRow(d);
+        }
+
+        public static InlineKeyboardButton[] ToArray(this InlineKeyboardButton inlineKeyboardButton)
+        {
+            return new[]
+            {
+                inlineKeyboardButton
+            };
         }
     }
 }

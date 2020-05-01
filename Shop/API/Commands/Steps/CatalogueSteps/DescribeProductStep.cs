@@ -10,7 +10,7 @@ namespace Shop.API.Commands.Steps.CatalogueSteps
 {
     public class DescribeProductStep : CatalogueStep
     {
-        public override string Message => "Это описание невероятного {0}";
+        public override string Message => "Это описание невероятного";
 
         public override async Task Execute(Update update, TelegramBotClient client)
         {
@@ -29,7 +29,7 @@ namespace Shop.API.Commands.Steps.CatalogueSteps
 
                 NextStep = new ReturnFromProductDescriptionStep(callback.Data, ChatId, client);
 
-                await EditMessageAsync(String.Format(Message, product), callback, backButton);
+                await EditMessageAsync($"{Message} {product}", callback, backButton);
             }
         }
 
