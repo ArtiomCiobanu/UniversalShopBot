@@ -6,6 +6,8 @@ namespace Shop.API.Commands.Steps.OrderSteps
 {
     public abstract class OrderStep : Step
     {
+        public override string CommandName => "order";
+
         public OrderData Data { get; }
 
         public OrderStep(Message message) : base(message.Chat.Id)

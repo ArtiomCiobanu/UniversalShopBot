@@ -15,11 +15,10 @@ namespace Shop.API.Commands.Steps.OrderSteps
         {
             var callback = update.CallbackQuery;
             var callbackMessage = callback.Message;
-            var selectedProduct = callback.Data;
+            var selectedProductId = callback.Data;
             var category = Data.Category;
 
-            Data.Product = Catalogue.Products[category].FirstOrDefault(x => x.Value == selectedProduct).Key;
-
+            Data.Product = Catalogue.GetProductName(selectedProductId);
             NextStep = new SpecifyAdressStep(ChatId, BotClient, Data);
 
             await EditMessageAsync($"Вы выбрали:\n{Data.Product} - {category}\n{Message}", callback);

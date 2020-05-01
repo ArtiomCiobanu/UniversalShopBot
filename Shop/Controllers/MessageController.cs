@@ -38,7 +38,6 @@ namespace Shop.Controllers
             return Ok(Bot.WebHookInfo);
         }
 
-
         [HttpPost]
         public void Update([FromBody]JsonElement input)
         {

@@ -7,7 +7,7 @@ using Telegram.Bot.Types;
 
 namespace Shop.API.Commands.Steps.CatalogueSteps
 {
-    public class ReturnFromProductDescriptionStep : Step
+    public class ReturnFromProductDescriptionStep : CatalogueStep
     {
         public override string Message => null;
         public string Category { get; }

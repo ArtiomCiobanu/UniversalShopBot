@@ -8,73 +8,42 @@ namespace Shop.API.Singletones
 {
     public static class Catalogue
     {
-        public static Dictionary<string, string> Categories = new Dictionary<string, string>()
+        public static Category[] Categories => new Category[]
         {
-            {"Категория 1", "1" },
-            {"Категория 2", "2" },
-            {"Категория 3", "3" }
+            new Category("Категория 1", "1"),
+            new Category("Категория 2", "2"),
+            new Category("Категория 3", "3")
+        };
+        public static Product[] Products => new Product[]
+        {
+            new Product("1", "1", "Товар 1"),
+            new Product("2", "1", "Товар 2"),
+            new Product("3", "1", "Товар 3"),
+            new Product("4", "2", "Товар 4"),
+            new Product("5", "2", "Товар 5"),
+            new Product("6", "2", "Товар 6"),
+            new Product("7", "3", "Товар 7"),
+            new Product("8", "3", "Товар 8"),
+            new Product("9", "3", "Товар 9"),
         };
 
-        public static Dictionary<string, Dictionary<string, string>> Products = new Dictionary<string, Dictionary<string, string>>()
+        public static string GetCategoryName(string id)
         {
-            {
-                "Категория 1",
-                new Dictionary<string, string>()
-                {
-                    {"Товар 1", "1" },
-                    {"Товар 2", "2" },
-                    {"Товар 3", "3" }
-                }
-            },
-            {
-                "Категория 2",
-                new Dictionary<string, string>()
-                {
-                    {"Товар 4", "4" },
-                    {"Товар 5", "5" },
-                    {"Товар 6", "6" }
-                }
-            },
-            {
-                "Категория 3",
-                new Dictionary<string, string>()
-                {
-                    {"Товар 7", "7" },
-                    {"Товар 8", "8" },
-                    {"Товар 9", "9" }
-                }
-            }
-        };
-
-        public static Product[] products =
-        {
-            new Product("Категория 1", "Товар 1"),
-            new Product("Категория 1", "Товар 2"),
-            new Product("Категория 1", "Товар 3"),
-            new Product("Категория 2", "Товар 4"),
-            new Product("Категория 2", "Товар 5"),
-            new Product("Категория 2", "Товар 6"),
-            new Product("Категория 3", "Товар 7"),
-            new Product("Категория 3", "Товар 8"),
-            new Product("Категория 3", "Товар 9"),
-        };
-
-        public static string GetCategoryKey(string value)
-        {
-            return Categories.SingleOrDefault(c => c.Value == value).Key;
+            return Categories.SingleOrDefault(c => c.Id == id).Name;
         }
-        public static string GetCategoryKeyByProductValue(string productValue)
+        public static string GetCategoryNameByProductId(string productId)
         {
-            return Products.SingleOrDefault(c => c.Value.ContainsValue(productValue)).Key;
-        }
-        public static string GetCategoryValue(string key)
-        {
-            return Categories.SingleOrDefault(c => c.Key == key).Value;
-        }
+            var categoryID = Products.SingleOrDefault(p => p.Id == productId).CategoryId;
 
-        public static string GetProductByValue(string value)
+            return Categories.SingleOrDefault(c => c.Id == categoryID).Name;
+        }
+        public static string GetCategoryId(string name)
         {
-            return Products.SingleOrDefault(c => c.Value.ContainsValue(value)).Value.SingleOrDefault(p => p.Value == value).Key;
+            return Categories.SingleOrDefault(c => c.Name == name).Id;
+        }
+        public static string GetProductName(string id)
+        {
+            return Products.SingleOrDefault(p => p.Id == id).Name;
         }
     }
 }

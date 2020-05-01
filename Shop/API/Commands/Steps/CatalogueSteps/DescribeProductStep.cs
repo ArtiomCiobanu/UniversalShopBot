@@ -8,7 +8,7 @@ using Telegram.Bot.Types;
 
 namespace Shop.API.Commands.Steps.CatalogueSteps
 {
-    public class DescribeProductStep : Step
+    public class DescribeProductStep : CatalogueStep
     {
         public override string Message => "Это описание невероятного {0}";
 
@@ -24,7 +24,7 @@ namespace Shop.API.Commands.Steps.CatalogueSteps
             }
             else
             {
-                var product = Catalogue.GetProductByValue(callback.Data);
+                var product = Catalogue.GetProductName(callback.Data);
                 var backButton = ReplyKeyboardTools.GetBackButton();
 
                 NextStep = new ReturnFromProductDescriptionStep(callback.Data, ChatId, client);

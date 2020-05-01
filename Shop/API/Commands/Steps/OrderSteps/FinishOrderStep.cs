@@ -22,6 +22,7 @@ namespace Shop.API.Commands.Steps.OrderSteps
                     $"Адрес: {Data.Adress}\n" +
                     $"{Message}",
                     callback, null);
+                //await SendMessageAsync(, callback, null);
             }
             else
             {

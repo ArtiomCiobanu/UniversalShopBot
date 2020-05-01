@@ -18,7 +18,7 @@ namespace Shop.API.Commands.Steps.OrderSteps
             var callbackMessage = callback.Message;
             var selectedItem = int.Parse(callback.Data) - 1;
 
-            Data.Category = Catalogue.Categories.FirstOrDefault(x => x.Value == callback.Data).Key;
+            Data.Category = Catalogue.GetCategoryName(callback.Data);
             NextStep = new SpecifyPhoneStep(ChatId, BotClient, Data);
 
             var keyboard = new InlineKeyboardMarkup(ReplyKeyboardTools.GetProductsButtonRow(Data.Category));

@@ -5,20 +5,18 @@ using System.Threading.Tasks;
 
 namespace Shop.API.Models
 {
-    public class Product
+    public class Category
     {
-        public string CategoryId { get; set; }
-        public string Name { get; set; }
         public string Id { get; set; }
+        public string Name { get; set; }
 
-        public Product()
+        public Category()
         {
 
         }
-        public Product(string id, string categoryId, string name)
+        public Category(string name, string id)
         {
             Id = id;
-            CategoryId = categoryId;
             Name = name;
         }
     }

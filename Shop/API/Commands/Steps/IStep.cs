@@ -7,6 +7,7 @@ namespace Shop.API.Commands.Steps
 {
     public interface IStep
     {
+        string CommandName { get; }
         long ChatId { get; }
         string Message { get; }
         IStep NextStep { get; }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Shop.API.Singletones
@@ -37,15 +38,21 @@ namespace Shop.API.Singletones
             };
         }
 
-
-
         public static InlineKeyboardButton[] GetCategoriesButtonRow()
         {
-            return GetKeyboardButtonRow(Catalogue.Categories);
+            Dictionary<string, string> d = new Dictionary<string, string>();
+            Catalogue.Categories.ToList().ForEach(c => d.Add(c.Name, c.Id));
+
+            return GetKeyboardButtonRow(d);
         }
-        public static InlineKeyboardButton[] GetProductsButtonRow(string category)
+        public static InlineKeyboardButton[] GetProductsButtonRow(string categoryName)
         {
-            return GetKeyboardButtonRow(Catalogue.Products[category]);
+            var categoryId = Catalogue.Categories.SingleOrDefault(c => c.Name == categoryName).Id;
+
+            Dictionary<string, string> d = new Dictionary<string, string>();
+            Catalogue.Products.Where(c => c.CategoryId == categoryId).ToList().ForEach(c => d.Add(c.Name, c.Id));
+
+            return GetKeyboardButtonRow(d);
         }
     }
 }

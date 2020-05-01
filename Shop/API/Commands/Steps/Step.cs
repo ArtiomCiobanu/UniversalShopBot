@@ -11,9 +11,11 @@ namespace Shop.API.Commands.Steps
     public abstract class Step : IStep
     {
         public long ChatId { get; }
-        public abstract string Message { get; }
         public IStep NextStep { get; set; } = null;
         public TelegramBotClient BotClient { get; }
+
+        public abstract string CommandName { get; }
+        public abstract string Message { get; }
 
         public abstract Task Execute(Update update, TelegramBotClient client);
 

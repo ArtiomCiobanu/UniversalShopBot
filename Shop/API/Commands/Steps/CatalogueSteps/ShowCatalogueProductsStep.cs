@@ -9,7 +9,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Shop.API.Commands.Steps.CatalogueSteps
 {
-    public class ShowCatalogueProductsStep : Step
+    public class ShowCatalogueProductsStep : CatalogueStep
     {
         public override string Message => "Каталог наших товаров:\nВсе товары в {0}:";
         public string Category { get; private set; }
@@ -21,11 +21,11 @@ namespace Shop.API.Commands.Steps.CatalogueSteps
             string selectedCategory = "";
             if (callback != null && callback.Data == "Back")
             {
-                selectedCategory = Catalogue.GetCategoryKeyByProductValue(Category);
+                selectedCategory = Catalogue.GetCategoryNameByProductId(Category);
             }
             else
             {
-                selectedCategory = Catalogue.GetCategoryKey(callback.Data);
+                selectedCategory = Catalogue.GetCategoryName(callback.Data);
             }
 
             var keyboard = new InlineKeyboardButton[][]

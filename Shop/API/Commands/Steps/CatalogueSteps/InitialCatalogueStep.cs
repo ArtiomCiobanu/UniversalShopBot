@@ -6,7 +6,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace Shop.API.Commands.Steps.CatalogueSteps
 {
-    public class InitialCatalogueStep : Step
+    public class InitialCatalogueStep : CatalogueStep
     {
         public override string Message => "Каталог наших товаров:\nВыберите категорию:";
 

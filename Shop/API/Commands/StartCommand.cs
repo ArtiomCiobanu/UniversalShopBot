@@ -9,8 +9,11 @@ namespace Shop.API.Commands
 
         public override async void Execute(Update update, TelegramBotClient client)
         {
-            await client.SendTextMessageAsync(update.Message.Chat.Id,
-                "Здравствуйте!\n" +
+            var messageId = update.Message.Chat.Id;
+
+            await client.SendTextMessageAsync(messageId,
+                "Здравствуйте!\n");
+            await client.SendTextMessageAsync(messageId,
                 "Используйте следующие команды чтобы:\n" +
                 "/help - помощь\n" +
                 "/order - оформить заказ\n" +
