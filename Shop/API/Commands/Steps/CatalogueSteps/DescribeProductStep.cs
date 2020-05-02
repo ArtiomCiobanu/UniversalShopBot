@@ -25,7 +25,7 @@ namespace Shop.API.Commands.Steps.CatalogueSteps
             else
             {
                 var product = Catalogue.GetProductName(callback.Data);
-                var backButton = ReplyKeyboardTools.GetBackButton();
+                var backButton = ReplyKeyboardTools.GetBackButton(CommandName);
 
                 NextStep = new ReturnFromProductDescriptionStep(callback.Data, ChatId, client);
 

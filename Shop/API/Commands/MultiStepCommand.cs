@@ -1,4 +1,5 @@
 ﻿using Shop.API.Commands.Steps;
+using Shop.API.Singletones;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Shop.API.Commands
 {
     public abstract class MultiStepCommand : Command
     {
-        public List<IStep> StepPool = new List<IStep>();
+        public List<IStep> StepPool { get; private set; }
         public abstract IStep GetInitialStep(Message chatId, TelegramBotClient client);
         public override bool MustBeExecutedForUpdate(Update update)
         {
@@ -18,8 +19,9 @@ namespace Shop.API.Commands
             var callback = update.CallbackQuery;
 
             return ContainsCommandName(message) ||
-                (callback != null && StepPool.Any(step => step.ChatId == callback.Message.Chat.Id)) ||
-                (message != null && StepPool.Any(step => step.ChatId == message.Chat.Id));
+                (message != null && StepPool.Any(s => s.ChatId == message.Chat.Id && s.CommandName == Name)) ||
+                (callback != null && ContainsCommandName(callback.Data) &&
+                    StepPool.Any(s => s.ChatId == callback.Message.Chat.Id && s.CommandName == Name));
         }
 
         public override async void Execute(Update update, TelegramBotClient client)
@@ -30,30 +32,42 @@ namespace Shop.API.Commands
             IStep step = null;
             if (ContainsCommandName(message))
             {
-                var duplicate = StepPool.SingleOrDefault(s => s.ChatId == message.Chat.Id);
-                if (duplicate != null)
-                {
-                    StepPool.Remove(duplicate);
-                }
+                StepPool.Where(s => s.ChatId == message.Chat.Id && s.CommandName == Name)
+                    .ToList().ForEach(s => StepPool.Remove(s));
 
                 step = GetInitialStep(message, client);
             }
-            else if (callback != null && StepPool.Any(s => s.ChatId == callback.Message.Chat.Id))
+            else if (callback != null && ContainsCommandName(callback.Data) &&
+                        StepPool.Any(s => s.ChatId == callback.Message.Chat.Id && s.CommandName == Name))
             {
-                step = StepPool.SingleOrDefault(s => s.ChatId == callback.Message.Chat.Id);
+                callback.Data = callback.Data.Remove(0, Name.Length + 1);
+
+                step = StepPool.SingleOrDefault(s => s.ChatId == callback.Message.Chat.Id && s.CommandName == Name);
                 StepPool.Remove(step);
             }
-            else if (message != null && StepPool.Any(s => s.ChatId == message.Chat.Id))
+            else if (message != null && StepPool.Any(s => s.ChatId == message.Chat.Id && s.CommandName == Name))
             {
-                step = StepPool.SingleOrDefault(s => s.ChatId == message.Chat.Id);
+                step = StepPool.SingleOrDefault(s => s.ChatId == message.Chat.Id && s.CommandName == Name);
                 StepPool.Remove(step);
             }
 
-            await step.Execute(update, client);
-            if (step.NextStep != null)
+            try
             {
-                StepPool.Add(step.NextStep);
+                await step.Execute(update, client);
+                if (step.NextStep != null)
+                {
+                    StepPool.Add(step.NextStep);
+                }
             }
+            catch
+            {
+                await client.SendTextMessageAsync(update.Message.Chat.Id, "Что-то пошло не так! Попробуйте ещё раз.");
+            }
+        }
+
+        public MultiStepCommand(List<IStep> stepPool)
+        {
+            StepPool = stepPool;
         }
     }
 }

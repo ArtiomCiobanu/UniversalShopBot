@@ -22,8 +22,8 @@ namespace Shop.API.Commands.Steps.CatalogueSteps
 
             var keyboard = new InlineKeyboardButton[][]
             {
-                ReplyKeyboardTools.GetProductsButtonRow(selectedCategory),
-                ReplyKeyboardTools.GetBackButton().ToArray()
+                ReplyKeyboardTools.GetProductsButtonRow(selectedCategory,CommandName),
+                ReplyKeyboardTools.GetBackButton(CommandName).ToArray()
             };
 
             NextStep = new DescribeProductStep(ChatId, client);

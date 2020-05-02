@@ -13,5 +13,8 @@ namespace Shop.API.Commands
     {
         public override string Name => "catalogue";
         public override IStep GetInitialStep(Message message, TelegramBotClient client) => new InitialCatalogueStep(message, client);
+
+        public CatalogueCommand(List<IStep> stepPool) : base(stepPool)
+        { }
     }
 }

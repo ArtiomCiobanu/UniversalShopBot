@@ -15,7 +15,7 @@ namespace Shop.API.Commands.Steps
         {
             NextStep = new SpecifyOrderProductsStep(ChatId, BotClient, Data);
 
-            var keyboard = new InlineKeyboardMarkup(ReplyKeyboardTools.GetCategoriesButtonRow());
+            var keyboard = new InlineKeyboardMarkup(ReplyKeyboardTools.GetCategoriesButtonRow(CommandName));
 
             await SendMessageAsync(Message, keyboard);
         }

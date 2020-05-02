@@ -26,7 +26,7 @@ namespace Shop.API.Commands.Steps.OrderSteps
 
             NextStep = new FinishOrderStep(ChatId, BotClient, Data);
 
-            var keyboard = new InlineKeyboardMarkup(ReplyKeyboardTools.GetConfirmAndCancelButtons());
+            var keyboard = new InlineKeyboardMarkup(ReplyKeyboardTools.GetConfirmAndCancelButtons(CommandName));
 
             await SendMessageAsync(Message);
             await SendMessageAsync(IsItCorrectMessage, keyboard);

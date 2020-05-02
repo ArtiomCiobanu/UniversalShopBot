@@ -1,4 +1,5 @@
 ﻿using Shop.API.Commands;
+using Shop.API.Commands.Steps;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,17 +12,19 @@ namespace Shop.API.Singletones
     {
         public static readonly TelegramBotClient Client = new TelegramBotClient(AppSettings.Token);
 
+        public static List<IStep> StepPool { get; private set; } = new List<IStep>();
+
         static readonly List<Command> commandsList = new List<Command>
         {
             new HelloCommand(),
             new StartCommand(),
-            new OrderCommand(),
-            new CatalogueCommand(),
-            new HelpCommand()
+            new HelpCommand(),
+            new OrderCommand(StepPool),
+            new CatalogueCommand(StepPool),
         };
         public static IReadOnlyList<Command> Commands => commandsList.AsReadOnly();
 
-        public static WebhookInfo WebHookInfo;
+        public static WebhookInfo WebHookInfo { get; private set; }
 
         public static async Task SetWebhook()
         {

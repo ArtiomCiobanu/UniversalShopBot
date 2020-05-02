@@ -22,52 +22,53 @@ namespace Shop.API.Singletones
             return buttons.ToArray();
         }
 
-        public static InlineKeyboardButton[][] GetConfirmAndCancelButtons()
+        public static InlineKeyboardButton[][] GetConfirmAndCancelButtons(string commandName)
         {
             return new InlineKeyboardButton[][]
             {
-                GetConfirmationButton().ToArray(),
-                GetCancellationButton().ToArray()
+                GetConfirmationButton(commandName).ToArray(),
+                GetCancellationButton(commandName).ToArray()
             };
         }
-        public static InlineKeyboardButton GetConfirmationButton()
+        public static InlineKeyboardButton GetConfirmationButton(string commandName)
         {
             return new InlineKeyboardButton()
             {
                 Text = "Подтвердить и оформить заказ",
-                CallbackData = "Confirmed"
+                CallbackData = $"{commandName} Confirmed"
             };
         }
-        public static InlineKeyboardButton GetCancellationButton()
+        public static InlineKeyboardButton GetCancellationButton(string commandName)
         {
             return new InlineKeyboardButton()
             {
                 Text = "Отмена",
-                CallbackData = "Cancelled"
+                CallbackData = $"{commandName} Cancelled"
             };
         }
-        public static InlineKeyboardButton GetBackButton()
+        public static InlineKeyboardButton GetBackButton(string commandName)
         {
             return new InlineKeyboardButton()
             {
                 Text = "« Вернуться назад",
-                CallbackData = "Back"
+                CallbackData = $"{commandName} Back"
             };
         }
 
-        public static InlineKeyboardButton[] GetCategoriesButtonRow()
+        public static InlineKeyboardButton[] GetCategoriesButtonRow(string commandName)
         {
             Dictionary<string, string> d = new Dictionary<string, string>();
-            Catalogue.Categories.ToList().ForEach(c => d.Add(c.Name, c.Id));
+            Catalogue.Categories.ToList().ForEach(c => d.Add(c.Name, $"{commandName} {c.Id}"));
 
             return GetKeyboardButtonRow(d);
         }
-        public static InlineKeyboardButton[] GetProductsButtonRow(string categoryName)
+        public static InlineKeyboardButton[] GetProductsButtonRow(string categoryName, string commandName)
         {
             var categoryId = Catalogue.Categories.SingleOrDefault(c => c.Name == categoryName).Id;
 
             Dictionary<string, string> d = new Dictionary<string, string>();
-            Catalogue.Products.Where(c => c.CategoryId == categoryId).ToList().ForEach(c => d.Add(c.Name, c.Id));
+            Catalogue.Products.Where(c => c.CategoryId == categoryId).ToList().
+                ForEach(c => d.Add(c.Name, $"{commandName} {c.Id}"));
 
             return GetKeyboardButtonRow(d);
         }

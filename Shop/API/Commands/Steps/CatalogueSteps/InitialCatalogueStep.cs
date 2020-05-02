@@ -14,7 +14,7 @@ namespace Shop.API.Commands.Steps.CatalogueSteps
         {
             var callback = update.CallbackQuery;
 
-            var keyboard = new InlineKeyboardMarkup(ReplyKeyboardTools.GetCategoriesButtonRow());
+            var keyboard = new InlineKeyboardMarkup(ReplyKeyboardTools.GetCategoriesButtonRow(CommandName));
 
             NextStep = new ShowCatalogueProductsStep(ChatId, BotClient);
 

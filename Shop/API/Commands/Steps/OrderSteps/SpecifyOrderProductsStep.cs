@@ -19,7 +19,7 @@ namespace Shop.API.Commands.Steps.OrderSteps
             Data.Category = Catalogue.GetCategoryName(callback.Data);
             NextStep = new SpecifyPhoneStep(ChatId, BotClient, Data);
 
-            var keyboard = new InlineKeyboardMarkup(ReplyKeyboardTools.GetProductsButtonRow(Data.Category));
+            var keyboard = new InlineKeyboardMarkup(ReplyKeyboardTools.GetProductsButtonRow(Data.Category, CommandName));
 
             await EditMessageAsync(Message, callback, keyboard);
         }
