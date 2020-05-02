@@ -22,12 +22,29 @@ namespace Shop.API.Singletones
             return buttons.ToArray();
         }
 
+        public static InlineKeyboardButton[][] GetOrderAndBackButtons(string product, string commandName)
+        {
+            return new InlineKeyboardButton[][]
+            {
+                GetOrderButton(commandName, product).ToArray(),
+                GetBackButton(commandName).ToArray()
+            };
+        }
         public static InlineKeyboardButton[][] GetConfirmAndCancelButtons(string commandName)
         {
             return new InlineKeyboardButton[][]
             {
                 GetConfirmationButton(commandName).ToArray(),
                 GetCancellationButton(commandName).ToArray()
+            };
+        }
+
+        public static InlineKeyboardButton GetOrderButton(string commandName, string product)
+        {
+            return new InlineKeyboardButton()
+            {
+                Text = "Заказать",
+                CallbackData = $"{commandName} Order"
             };
         }
         public static InlineKeyboardButton GetConfirmationButton(string commandName)

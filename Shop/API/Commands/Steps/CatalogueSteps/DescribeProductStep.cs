@@ -1,4 +1,6 @@
-﻿using Shop.API.Singletones;
+﻿using Shop.API.Commands.Steps.OrderSteps;
+using Shop.API.Models;
+using Shop.API.Singletones;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,7 @@ namespace Shop.API.Commands.Steps.CatalogueSteps
     public class DescribeProductStep : CatalogueStep
     {
         public override string Message => "Это описание невероятного";
+        public OrderData Data { get; private set; } = new OrderData();
 
         public override async Task Execute(Update update, TelegramBotClient client)
         {
@@ -18,23 +21,25 @@ namespace Shop.API.Commands.Steps.CatalogueSteps
 
             if (callback != null && callback.Data == "Back")
             {
-                var initial = new InitialCatalogueStep(ChatId, client);
-                await initial.Execute(update, client);
-                NextStep = initial.NextStep;
+                var next = new InitialCatalogueStep(ChatId, client);
+                await next.Execute(update, client);
+                NextStep = next.NextStep;
             }
             else
             {
-                var product = Catalogue.GetProductName(callback.Data);
-                var backButton = ReplyKeyboardTools.GetBackButton(CommandName);
+                Data.Product = Catalogue.GetProductName(callback.Data);
+                var backButton = ReplyKeyboardTools.GetOrderAndBackButtons(Data.Product, CommandName);
 
-                NextStep = new ReturnFromProductDescriptionStep(callback.Data, ChatId, client);
+                NextStep = new ReturnOrOrderStep(Data, callback.Data, ChatId, client);
 
-                await EditMessageAsync($"{Message} {product}", callback, backButton);
+                await EditMessageAsync($"{Message} {Data.Product}", callback, backButton);
             }
         }
 
-        public DescribeProductStep(long chatId, TelegramBotClient client) : base(chatId, client)
+        public DescribeProductStep(long chatId, TelegramBotClient client, string selectedCategory) :
+            base(chatId, client)
         {
+            Data.Category = selectedCategory;
         }
     }
 }

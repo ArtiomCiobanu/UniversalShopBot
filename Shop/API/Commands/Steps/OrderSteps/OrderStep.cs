@@ -12,11 +12,11 @@ namespace Shop.API.Commands.Steps.OrderSteps
 
         public OrderStep(Message message) : base(message.Chat.Id)
         {
-            Data = new OrderData(message.Chat.FirstName, message.Chat.LastName);
+            Data = new OrderData(message);
         }
         public OrderStep(Message message, TelegramBotClient client) : base(message.Chat.Id, client)
         {
-            Data = new OrderData(message.Chat.FirstName, message.Chat.LastName);
+            Data = new OrderData(message);
         }
         public OrderStep(Message message, OrderData data) : base(message.Chat.Id)
         {

@@ -10,7 +10,6 @@ namespace Shop.API.Commands.Steps.CatalogueSteps
     public abstract class CatalogueStep : Step
     {
         public override string CommandName => "catalogue";
-
         public CatalogueStep(Message message, TelegramBotClient client) : base(message, client)
         {
         }
