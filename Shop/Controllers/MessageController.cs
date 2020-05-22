@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Shop.API;
 using Shop.API.Singletones;
 using Telegram.Bot.Types;
 
@@ -11,6 +12,8 @@ namespace Shop.Controllers
     [ApiController]
     public class MessageController : ControllerBase
     {
+        IBot MainBot;
+
         [HttpGet]
         public string Test()
         {
@@ -19,23 +22,23 @@ namespace Shop.Controllers
         [HttpGet]
         public OkObjectResult GetWebhookInfo()
         {
-            var i = Bot.WebHookInfo;
+            var i = MainBot.WebHookInfo;
 
             return Ok(i);
         }
         [HttpGet]
         public async Task<OkObjectResult> InitializeWebHook()
         {
-            await Bot.SetWebhook();
+            await MainBot.SetWebhook();
 
-            return Ok(Bot.WebHookInfo);
+            return Ok(MainBot.WebHookInfo);
         }
         [HttpGet]
         public async Task<OkObjectResult> DeleteWebhook()
         {
-            await Bot.DeleteWebhook();
+            await MainBot.DeleteWebhook();
 
-            return Ok(Bot.WebHookInfo);
+            return Ok(MainBot.WebHookInfo);
         }
 
         [HttpPost]
@@ -43,9 +46,9 @@ namespace Shop.Controllers
         {
             Update update = JsonConvert.DeserializeObject<Update>(input.ToString());
 
-            if (!Bot.FindCommandAndExecute(update))
+            if (!MainBot.FindCommandAndExecute(update))
             {
-                Bot.ExecuteCommandStepForUpdate(update);
+                MainBot.ExecuteCommandStepForUpdate(update);
             }
         }
     }

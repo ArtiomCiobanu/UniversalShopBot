@@ -10,7 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Shop.API;
 using Shop.API.Singletones;
+using Shop.Controllers;
 
 namespace Shop
 {
@@ -26,6 +28,14 @@ namespace Shop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IBot, TelegramBot>(provider =>
+            {
+                var mainBot = new TelegramBot();
+                mainBot.SetWebhook().Wait();
+
+                return mainBot;
+            });
+
             services.AddControllers();
         }
 
@@ -39,14 +49,10 @@ namespace Shop
 
             app.UseRouting();
 
-            //app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-
-            Bot.SetWebhook().Wait();
         }
     }
 }
