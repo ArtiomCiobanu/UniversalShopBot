@@ -12,7 +12,7 @@ namespace Shop.Controllers
     [ApiController]
     public class MessageController : ControllerBase
     {
-        IBot MainBot;
+        public static IBot MainBot { get; set; }
 
         [HttpGet]
         public string Test()

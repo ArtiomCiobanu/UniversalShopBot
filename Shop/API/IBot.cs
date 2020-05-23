@@ -21,7 +21,9 @@ namespace Shop.API
         public IReadOnlyList<Command> Commands { get; }
 
         public Task SetWebhook();
+        public Task SetWebhook(string webhookUrl);
         public Task DeleteWebhook();
+
         public bool FindCommandAndExecute(Update update);
         public void ExecuteCommandStepForUpdate(Update update);
         public Command FindCommandNameInMessage(Message message);

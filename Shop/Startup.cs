@@ -28,13 +28,11 @@ namespace Shop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IBot, TelegramBot>(provider =>
+            MessageController.MainBot = new TelegramBot("1158660778:AAEi0BoYtLIRBbfrNh6LmDbv7Lko3SIjppg")
             {
-                var mainBot = new TelegramBot();
-                mainBot.SetWebhook().Wait();
-
-                return mainBot;
-            });
+                Name = "TestTelegramShop"
+            };
+            MessageController.MainBot.SetWebhook("https://shoptelegrambot.azurewebsites.net/api/message/Update").Wait();
 
             services.AddControllers();
         }

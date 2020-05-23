@@ -17,7 +17,7 @@ namespace Shop.API
 
 
         public TelegramBotClient Client { get; }
-        public List<IStep> StepPool { get; private set; }
+        public List<IStep> StepPool { get; }
         public IReadOnlyList<Command> Commands { get; }
 
         public async Task SetWebhook()
@@ -27,6 +27,13 @@ namespace Shop.API
             await Client.SetWebhookAsync(WebHookUrl);
             WebHookInfo = await Client.GetWebhookInfoAsync();
         }
+        public async Task SetWebhook(string webhookUrl)
+        {
+            WebHookUrl = @webhookUrl;
+
+            await SetWebhook();
+        }
+
         public async Task DeleteWebhook()
         {
             await Client.DeleteWebhookAsync();
@@ -72,11 +79,11 @@ namespace Shop.API
             return foundCommand;
         }
 
-        public TelegramBot()
+        public TelegramBot(string token)
         {
-            WebHookUrl = @"https://shoptelegrambot.azurewebsites.net/api/message/Update";
-            Name = "TestTelegramShop";
-            Token = "1158660778:AAEi0BoYtLIRBbfrNh6LmDbv7Lko3SIjppg";
+            StepPool = new List<IStep>();
+
+            Token = token;
 
             var commands = new List<Command>
             {
@@ -90,14 +97,13 @@ namespace Shop.API
 
             Client = new TelegramBotClient(Token);
         }
-        public TelegramBot(string token)
-        {
-            Client = new TelegramBotClient(Token);
-        }
         public TelegramBot(string token, List<Command> commands)
         {
-            Client = new TelegramBotClient(Token);
+            StepPool = new List<IStep>();
 
+            Token = token;
+
+            Client = new TelegramBotClient(Token);
             Commands = commands.AsReadOnly();
         }
     }
