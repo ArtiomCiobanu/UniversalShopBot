@@ -8,43 +8,15 @@ using Telegram.Bot.Types;
 
 namespace Shop.API
 {
-    public class TelegramBot : IBot
+    public class TelegramBot : Bot
     {
-        public string Name { get; set; }
-        public string Token { get; set; }
-        public WebhookInfo WebHookInfo { get; private set; }
-        public string WebHookUrl { get; set; }
-
-
-        public TelegramBotClient Client { get; }
-        public List<IStep> StepPool { get; }
-        public IReadOnlyList<Command> Commands { get; }
-
-        public async Task SetWebhook()
-        {
-            await Client.DeleteWebhookAsync();
-
-            await Client.SetWebhookAsync(WebHookUrl);
-            WebHookInfo = await Client.GetWebhookInfoAsync();
-        }
-        public async Task SetWebhook(string webhookUrl)
-        {
-            WebHookUrl = @webhookUrl;
-
-            await SetWebhook();
-        }
-
-        public async Task DeleteWebhook()
-        {
-            await Client.DeleteWebhookAsync();
-        }
         /// <summary>
-        /// Execude if begins with "/commandName"
+        /// Execute if begins with "/commandName"
         /// </summary>
         /// <param name="update"></param>
         /// <param name="client"></param>
         /// <returns></returns>
-        public bool FindCommandAndExecute(Update update)
+        public override bool FindCommandAndExecute(Update update)
         {
             var command = FindCommandNameInMessage(update.Message);
             if (command != null)
@@ -57,7 +29,7 @@ namespace Shop.API
                 return false;
             }
         }
-        public void ExecuteCommandStepForUpdate(Update update)
+        public override void ExecuteCommandStepForUpdate(Update update)
         {
             foreach (var c in Commands)
             {
@@ -68,7 +40,7 @@ namespace Shop.API
                 }
             }
         }
-        public Command FindCommandNameInMessage(Message message)
+        public override Command FindCommandNameInMessage(Message message)
         {
             if (message == null)
                 return null;
@@ -79,32 +51,13 @@ namespace Shop.API
             return foundCommand;
         }
 
-        public TelegramBot(string token)
+        public TelegramBot(string token) : base(token)
         {
-            StepPool = new List<IStep>();
 
-            Token = token;
-
-            var commands = new List<Command>
-            {
-                new HelloCommand(),
-                new StartCommand(),
-                new HelpCommand(),
-                new OrderCommand(StepPool),
-                new CatalogueCommand(StepPool),
-            };
-            Commands = commands.AsReadOnly();
-
-            Client = new TelegramBotClient(Token);
         }
-        public TelegramBot(string token, List<Command> commands)
+        public TelegramBot(string token, List<Command> commands) : base(token, commands)
         {
-            StepPool = new List<IStep>();
 
-            Token = token;
-
-            Client = new TelegramBotClient(Token);
-            Commands = commands.AsReadOnly();
         }
     }
 }

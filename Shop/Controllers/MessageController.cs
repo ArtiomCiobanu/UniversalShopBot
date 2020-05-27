@@ -10,45 +10,45 @@ namespace Shop.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class MessageController : ControllerBase
+    public class MessageController : BotController
     {
-        public static IBot MainBot { get; set; }
+        public static IBot ControllerBot { get; set; }
 
         [HttpGet]
-        public string Test()
+        public override string Test()
         {
             return "Yyyyyes";
         }
         [HttpGet]
-        public OkObjectResult GetWebhookInfo()
+        public override OkObjectResult GetWebhookInfo()
         {
-            var i = MainBot.WebHookInfo;
+            var i = ControllerBot.WebHookInfo;
 
             return Ok(i);
         }
         [HttpGet]
-        public async Task<OkObjectResult> InitializeWebHook()
+        public override async Task<OkObjectResult> InitializeWebHook()
         {
-            await MainBot.SetWebhook();
+            await ControllerBot.SetWebhook();
 
-            return Ok(MainBot.WebHookInfo);
+            return Ok(ControllerBot.WebHookInfo);
         }
         [HttpGet]
-        public async Task<OkObjectResult> DeleteWebhook()
+        public override async Task<OkObjectResult> DeleteWebhook()
         {
-            await MainBot.DeleteWebhook();
+            await ControllerBot.DeleteWebhook();
 
-            return Ok(MainBot.WebHookInfo);
+            return Ok(ControllerBot.WebHookInfo);
         }
 
         [HttpPost]
-        public void Update([FromBody]JsonElement input)
+        public override void Update([FromBody] JsonElement input)
         {
             Update update = JsonConvert.DeserializeObject<Update>(input.ToString());
 
-            if (!MainBot.FindCommandAndExecute(update))
+            if (!ControllerBot.FindCommandAndExecute(update))
             {
-                MainBot.ExecuteCommandStepForUpdate(update);
+                ControllerBot.ExecuteCommandStepForUpdate(update);
             }
         }
     }

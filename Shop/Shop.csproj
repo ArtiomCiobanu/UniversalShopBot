@@ -10,5 +10,9 @@
     <PackageReference Include="Telegram.bot" Version="15.5.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="API_V2\Singletones\" />
+  </ItemGroup>
+
 
 </Project>
