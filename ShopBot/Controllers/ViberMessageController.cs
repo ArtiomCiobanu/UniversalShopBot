@@ -1,4 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShopBot.API_V2;
+using ShopBot.API_V2.Models;
+using ShopBot.API_V2.Telegram;
+using ShopBot.API_V2.Viber;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,27 +13,17 @@ namespace ShopBot.Controllers
 {
     public class ViberMessageController : BotController
     {
-        public override Task<OkObjectResult> DeleteWebhook()
+        static ViberBot telegramBot = null;
+        public override IBot ControllerBot
         {
-            throw new NotImplementedException();
+            get => telegramBot;
+            set
+            {
+                telegramBot = (ViberBot)value;
+            }
         }
 
-        public override OkObjectResult GetWebhookInfo()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<OkObjectResult> InitializeWebHook()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override string Test()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Update([FromBody] JsonElement input)
+        public override BotUpdate GetUpdate(JsonElement jsonElement)
         {
             throw new NotImplementedException();
         }

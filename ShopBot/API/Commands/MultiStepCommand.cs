@@ -12,7 +12,7 @@ namespace ShopBot.API.Commands
     public abstract class MultiStepCommand : Command
     {
         public List<IStep> StepPool { get; private set; }
-        public abstract IStep GetInitialStep(Message chatId, TelegramBotClient client);
+        public abstract IStep GetInitialStep(Message message, TelegramBotClient client);
         public override bool MustBeExecutedForUpdate(Update update)
         {
             var message = update.Message;

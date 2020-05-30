@@ -10,31 +10,31 @@ namespace ShopBot.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class MessageController : BotController
+    public class MessageController : ControllerBase
     {
-        public static IBot ControllerBot { get; set; }
+        public static TelegramBot ControllerBot { get; set; }
 
         [HttpGet]
-        public override string Test()
+        public string Test()
         {
             return "Yyyyyes";
         }
         [HttpGet]
-        public override OkObjectResult GetWebhookInfo()
+        public OkObjectResult GetWebhookInfo()
         {
             var i = ControllerBot.WebHookInfo;
 
             return Ok(i);
         }
         [HttpGet]
-        public override async Task<OkObjectResult> InitializeWebHook()
+        public async Task<OkObjectResult> InitializeWebHook()
         {
             await ControllerBot.SetWebhook();
 
             return Ok(ControllerBot.WebHookInfo);
         }
         [HttpGet]
-        public override async Task<OkObjectResult> DeleteWebhook()
+        public async Task<OkObjectResult> DeleteWebhook()
         {
             await ControllerBot.DeleteWebhook();
 
@@ -42,7 +42,7 @@ namespace ShopBot.Controllers
         }
 
         [HttpPost]
-        public override void Update([FromBody] JsonElement input)
+        public void Update([FromBody] JsonElement input)
         {
             Update update = JsonConvert.DeserializeObject<Update>(input.ToString());
 

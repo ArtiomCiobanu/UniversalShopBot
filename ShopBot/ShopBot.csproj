@@ -5,13 +5,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="API_V2\Singletones\**" />
+    <Content Remove="API_V2\Singletones\**" />
+    <EmbeddedResource Remove="API_V2\Singletones\**" />
+    <None Remove="API_V2\Singletones\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Telegram.bot" Version="15.5.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="API_V2\Singletones\" />
+    <Folder Include="API_V2\Singletons\" />
   </ItemGroup>
 
 

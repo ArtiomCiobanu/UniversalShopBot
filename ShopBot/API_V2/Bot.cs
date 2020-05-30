@@ -13,9 +13,9 @@ namespace ShopBot.API_V2
     {
         public string Name { get; private set; }
         public string Token { get; private set; }
-        public JsonElement WebHookInfo { get; private set; }
+        public string WebHookInfo { get; private set; }
         public string WebHookUrl { get; private set; }
-        public IBotClient Client { get; private set; }
+        public IBotClient Client { get; protected set; }
         public List<IStep> StepPool { get; private set; }
         public IReadOnlyList<ICommand> Commands { get; private set; }
 
@@ -24,7 +24,7 @@ namespace ShopBot.API_V2
             await Client.DeleteWebhookAsync();
 
             await Client.SetWebhookAsync(WebHookUrl);
-            WebHookInfo = await Client.GetWebhookInfoAsync();
+            WebHookInfo = await Client.GetWebhookInfoJsonAsync(); ;
         }
         public async Task SetWebhook(string webhookUrl)
         {
@@ -37,7 +37,7 @@ namespace ShopBot.API_V2
             await Client.DeleteWebhookAsync();
         }
 
-        public void ExecuteCommandStepForUpdate(Update update)
+        public void ExecuteCommandStepForUpdate(BotUpdate update)
         {
             foreach (var c in Commands)
             {
@@ -48,7 +48,7 @@ namespace ShopBot.API_V2
                 }
             }
         }
-        public bool FindCommandAndExecute(Update update)
+        public bool FindCommandAndExecute(BotUpdate update)
         {
             var command = FindCommandByNameInMessage(update.MessageText);
             if (command != null)
@@ -74,35 +74,34 @@ namespace ShopBot.API_V2
             return foundCommand;
         }
 
-        protected abstract void InitializeBotAndCommands();
-        protected abstract void InitializeBotClient();
+        protected abstract void InitializeBotClient(string token);
 
         public Bot(string token)
         {
             StepPool = new List<IStep>();
             Token = token;
 
-            InitializeBotClient();
-            /*var commands = new List<Command>
+            var commands = new List<Command>
             {
-                new HelloCommand(),
+                /*new HelloCommand(),
                 new StartCommand(),
                 new HelpCommand(),
                 new OrderCommand(StepPool),
-                new CatalogueCommand(StepPool),
+                new CatalogueCommand(StepPool),*/
             };
-            Commands = commands.AsReadOnly();*/
+            Commands = commands.AsReadOnly();
 
+            InitializeBotClient(token);
             //Client = new TelegramBotClient(Token);
         }
-        public Bot(string token, List<Command> commands)
+        public Bot(string token, List<ICommand> commands)
         {
             StepPool = new List<IStep>();
             Token = token;
             Commands = commands.AsReadOnly();
 
+            InitializeBotClient(token);
             //Client = new TelegramBotClient(Token);
-            InitializeBotClient();
         }
     }
 }

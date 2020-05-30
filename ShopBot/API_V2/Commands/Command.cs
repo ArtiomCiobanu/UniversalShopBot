@@ -11,8 +11,8 @@ namespace ShopBot.API_V2.Commands
     {
         public string Name { get; }
 
-        public abstract void Execute(Update update, IBotClient client);
-        public virtual bool MustBeExecutedForUpdate(Update update)
+        public abstract void Execute(BotUpdate update, IBotClient client);
+        public virtual bool MustBeExecutedForUpdate(BotUpdate update)
         {
             return (update.MessageText != null) ? ContainsCommandName(update.MessageText) : false;
         }

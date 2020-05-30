@@ -13,7 +13,7 @@ namespace ShopBot.API_V2
     {
         public string Name { get; }
         public string Token { get; }
-        public JsonElement WebHookInfo { get; }
+        public string WebHookInfo { get; }
         public string WebHookUrl { get; }
 
         public IBotClient Client { get; }
@@ -24,8 +24,8 @@ namespace ShopBot.API_V2
         public Task SetWebhook(string webhookUrl);
         public Task DeleteWebhook();
 
-        public bool FindCommandAndExecute(Update updateMessage);
+        public bool FindCommandAndExecute(BotUpdate updateMessage);
         public ICommand FindCommandByNameInMessage(string message);
-        public void ExecuteCommandStepForUpdate(Update update);
+        public void ExecuteCommandStepForUpdate(BotUpdate update);
     }
 }
