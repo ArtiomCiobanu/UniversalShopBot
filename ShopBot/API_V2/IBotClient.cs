@@ -13,5 +13,6 @@ namespace ShopBot.API_V2
         Task<string> GetWebhookInfoJsonAsync();
 
         Task SendTextMessageAsync(long chatId, string text);
+        Task EditTextMessageAsync(long chatId, int messageId, string text);
     }
 }

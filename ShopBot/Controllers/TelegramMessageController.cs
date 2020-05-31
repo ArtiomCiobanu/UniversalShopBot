@@ -35,12 +35,14 @@ namespace ShopBot.Controllers
                 message = update.Message;
 
                 botUpdate.CallbackData = null;
+                botUpdate.CallbackMessageId = 0;
             }
             else
             {
                 message = update.CallbackQuery.Message;
 
                 botUpdate.CallbackData = update.CallbackQuery.Data;
+                botUpdate.CallbackMessageId = update.CallbackQuery.Message.MessageId;
             }
 
             botUpdate.MessageText = message.Text;

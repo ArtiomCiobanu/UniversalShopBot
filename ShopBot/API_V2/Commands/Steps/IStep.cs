@@ -14,7 +14,11 @@ namespace ShopBot.API_V2.Commands.Steps
         IStep NextStep { get; }
         IBotClient BotClient { get; }
         Task Execute(BotUpdate update, IBotClient client);
+
+        Task SendMessageAsync(string messageText);
+        Task EditMessageAsync(string messageText, int callbackMessageId);
+
         //Task SendMessageAsync(string message, InlineKeyboardMarkup replyMarkup = null);
-        //Task EditMessageAsync(stыring message, CallbackQuery callback, InlineKeyboardMarkup replyMarkup = null);
+        //Task EditMessageAsync(string message, CallbackQuery callback, InlineKeyboardMarkup replyMarkup = null);
     }
 }

@@ -9,6 +9,8 @@ namespace ShopBot.API_V2.Models
     {
         public string MessageText { get; set; }
         public long ChatId { get; set; }
+
         public string CallbackData { get; set; }
+        public int CallbackMessageId { get; set; }
     }
 }
