@@ -20,6 +20,8 @@ namespace ShopBot.API_V2
         public List<IStep> StepPool { get; }
         public IReadOnlyList<ICommand> Commands { get; }
 
+        public void SetCommands(List<ICommand> commands);
+
         public Task SetWebhook();
         public Task SetWebhook(string webhookUrl);
         public Task DeleteWebhook();

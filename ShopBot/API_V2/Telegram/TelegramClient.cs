@@ -23,9 +23,9 @@ namespace ShopBot.API_V2.Telegram
         }
         public Task SetWebhookAsync(string url) => Client.SetWebhookAsync(url);
 
-        public async Task SendTextMessageAsync(long chatId, string text)
+        public async Task SendTextMessageAsync(long chatId, string text, int replyToMessageId)
         {
-            await Client.SendTextMessageAsync(chatId, text);
+            await Client.SendTextMessageAsync(chatId, text, replyToMessageId: replyToMessageId);
         }
         public async Task EditTextMessageAsync(long chatId, int messageId, string messageText)
         {

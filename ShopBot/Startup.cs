@@ -10,8 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using ShopBot.API;
-using ShopBot.API.Singletones;
+using ShopBot.API_V2.Commands;
+using ShopBot.API_V2.Singletons;
+using ShopBot.API_V2.Telegram;
 using ShopBot.Controllers;
 
 namespace ShopBot
@@ -28,16 +29,22 @@ namespace ShopBot
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            MessageController.ControllerBot = new TelegramBot("1158660778:AAEi0BoYtLIRBbfrNh6LmDbv7Lko3SIjppg")
+            /*MessageController.ControllerBot = new TelegramBot("1158660778:AAEi0BoYtLIRBbfrNh6LmDbv7Lko3SIjppg")
             {
                 Name = "TestTelegramShop"
             };
-            MessageController.ControllerBot.SetWebhook("https://shoptelegrambot.azurewebsites.net/api/message/Update").Wait();
+            MessageController.ControllerBot.SetWebhook("https://shoptelegrambot.azurewebsites.net/api/message/Update").Wait();*/
 
-            /*ViberMessageController.ControllerBot = new TelegramBot("1158660778:AAEi0BoYtLIRBbfrNh6LmDbv7Lko3SIjppg")
-            {
-                Name = "TestViberBot"
-            };*/
+            TelegramBot telegramBot = new TelegramBot("1158660778:AAEi0BoYtLIRBbfrNh6LmDbv7Lko3SIjppg",
+                "MainTelegramBot",
+                "https://shoptelegrambot.azurewebsites.net/TelegramBot/Update",
+                new List<ICommand>()
+                {
+                    new StartCommand(),
+                    new HelpCommand(),
+                    new HelloCommand()
+                });
+            BotFactory.AddBot(telegramBot);
 
             services.AddControllers();
         }

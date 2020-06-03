@@ -13,10 +13,19 @@ namespace ShopBot.API_V2.Telegram
             Client = new TelegramClient(token);
         }
 
-        public TelegramBot(string token) : base(token)
+        public TelegramBot(string token, string name) : base(token, name)
         {
         }
-        public TelegramBot(string token, List<ICommand> commands) : base(token, commands)
+        public TelegramBot(string token, string name, string webHookUrl) : base(token, name, webHookUrl)
+        {
+
+        }
+        public TelegramBot(string token, string name, List<ICommand> commands) : base(token, name, commands)
+        {
+
+        }
+        public TelegramBot(string token, string name, string webHookUrl, List<ICommand> commands) :
+            base(token, name, webHookUrl, commands)
         {
 
         }

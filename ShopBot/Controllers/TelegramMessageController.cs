@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using ShopBot.API_V2;
 using ShopBot.API_V2.Models;
+using ShopBot.API_V2.Singletons;
 using ShopBot.API_V2.Telegram;
 using System;
 using System.Collections.Generic;
@@ -12,17 +13,12 @@ using Telegram.Bot.Types;
 
 namespace ShopBot.Controllers
 {
+
+    [Route("TelegramBot/[action]")]
+    [ApiController]
     public class TelegramMessageController : BotController
     {
-        static TelegramBot telegramBot = null;
-        public override IBot ControllerBot
-        {
-            get => telegramBot;
-            set
-            {
-                telegramBot = (TelegramBot)value;
-            }
-        }
+        public override string BotName => "MainTelegramBot";
 
         public override BotUpdate GetUpdate(JsonElement jsonElement)
         {
@@ -33,6 +29,7 @@ namespace ShopBot.Controllers
             if (update.Message != null)
             {
                 message = update.Message;
+                botUpdate.MessageId = update.Message.MessageId;
 
                 botUpdate.CallbackData = null;
                 botUpdate.CallbackMessageId = 0;

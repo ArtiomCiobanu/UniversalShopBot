@@ -11,13 +11,18 @@ namespace ShopBot.API_V2
 {
     public abstract class Bot : IBot
     {
-        public string Name { get; private set; }
+        public string Name { get; }
         public string Token { get; private set; }
         public string WebHookInfo { get; private set; }
         public string WebHookUrl { get; private set; }
         public IBotClient Client { get; protected set; }
         public List<IStep> StepPool { get; private set; }
         public IReadOnlyList<ICommand> Commands { get; private set; }
+
+        public void SetCommands(List<ICommand> commands)
+        {
+            Commands = commands.AsReadOnly();
+        }
 
         public async Task SetWebhook()
         {
@@ -63,7 +68,7 @@ namespace ShopBot.API_V2
         }
         public ICommand FindCommandByNameInMessage(string messageText)
         {
-            if (!string.IsNullOrEmpty(messageText))
+            if (string.IsNullOrEmpty(messageText))
             {
                 return null;
             }
@@ -76,32 +81,65 @@ namespace ShopBot.API_V2
 
         protected abstract void InitializeBotClient(string token);
 
-        public Bot(string token)
+        /// <summary>
+        /// Initializes the Bot with the specified token
+        /// </summary>
+        /// <param name="token"></param>
+        public Bot(string token, string name)
         {
+            Name = name;
             StepPool = new List<IStep>();
             Token = token;
 
-            var commands = new List<Command>
-            {
-                /*new HelloCommand(),
-                new StartCommand(),
-                new HelpCommand(),
-                new OrderCommand(StepPool),
-                new CatalogueCommand(StepPool),*/
-            };
-            Commands = commands.AsReadOnly();
-
             InitializeBotClient(token);
-            //Client = new TelegramBotClient(Token);
         }
-        public Bot(string token, List<ICommand> commands)
+        /// <summary>
+        /// Initializes the Bot with the specified token and sets the webhook
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="webHookUrl"></param>
+        public Bot(string token, string name, string webHookUrl)
         {
+            Name = name;
+            StepPool = new List<IStep>();
+            Token = token;
+
+            InitializeBotClient(token);
+
+            WebHookUrl = webHookUrl;
+            SetWebhook().Wait();
+        }
+        /// <summary>
+        /// Initializes the Bot with the specified token and commands
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="commands"></param>
+        public Bot(string token, string name, List<ICommand> commands)
+        {
+            Name = name;
             StepPool = new List<IStep>();
             Token = token;
             Commands = commands.AsReadOnly();
 
             InitializeBotClient(token);
-            //Client = new TelegramBotClient(Token);
+        }
+        /// <summary>
+        /// Initializes the Bot with the specified token and commands and sets the webhook
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="webHookUrl"></param>
+        /// <param name="commands"></param>
+        public Bot(string token, string name, string webHookUrl, List<ICommand> commands)
+        {
+            Name = name;
+            StepPool = new List<IStep>();
+            Token = token;
+            Commands = commands.AsReadOnly();
+
+            InitializeBotClient(token);
+
+            WebHookUrl = webHookUrl;
+            SetWebhook().Wait();
         }
     }
 }

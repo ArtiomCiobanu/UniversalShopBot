@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShopBot.API_V2;
 using ShopBot.API_V2.Models;
+using ShopBot.API_V2.Singletons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,8 @@ namespace ShopBot.Controllers
 {
     public abstract class BotController : ControllerBase
     {
-        public abstract IBot ControllerBot { get; set; }
+        public abstract string BotName { get; }
+        public IBot ControllerBot => BotFactory.BotDictionary[BotName];
 
         public abstract BotUpdate GetUpdate(JsonElement jsonElement);
 

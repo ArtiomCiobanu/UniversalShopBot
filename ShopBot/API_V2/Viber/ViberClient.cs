@@ -23,7 +23,12 @@ namespace ShopBot.API_V2.Viber
             throw new NotImplementedException();
         }
 
-        public Task SendTextMessageAsync(long chatId, string text)
+        public Task EditTextMessageAsync(long chatId, int messageId, string text)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SendTextMessageAsync(long chatId, string text, int replyToMessageId = 0)
         {
             throw new NotImplementedException();
         }

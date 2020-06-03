@@ -13,12 +13,18 @@ namespace ShopBot.API_V2.Viber
             Client = new ViberClient(token);
         }
 
-        public ViberBot(string token) : base(token)
+        public ViberBot(string token, string name) : base(token, name)
         {
         }
-        public ViberBot(string token, List<ICommand> commands) : base(token, commands)
+        public ViberBot(string token, string name, string webHookUrl) : base(token, name, webHookUrl)
         {
-
+        }
+        public ViberBot(string token, string name, List<ICommand> commands) : base(token, name, commands)
+        {
+        }
+        public ViberBot(string token, string name, string webHookUrl, List<ICommand> commands) :
+            base(token, name, webHookUrl, commands)
+        {
         }
     }
 }

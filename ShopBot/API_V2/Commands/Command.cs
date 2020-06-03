@@ -9,7 +9,7 @@ namespace ShopBot.API_V2.Commands
 {
     public abstract class Command : ICommand
     {
-        public string Name { get; }
+        public abstract string Name { get; }
 
         public abstract void Execute(BotUpdate update, IBotClient client);
         public virtual bool MustBeExecutedForUpdate(BotUpdate update)

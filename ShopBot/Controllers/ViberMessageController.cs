@@ -13,15 +13,7 @@ namespace ShopBot.Controllers
 {
     public class ViberMessageController : BotController
     {
-        static ViberBot telegramBot = null;
-        public override IBot ControllerBot
-        {
-            get => telegramBot;
-            set
-            {
-                telegramBot = (ViberBot)value;
-            }
-        }
+        public override string BotName => "MainViberBot";
 
         public override BotUpdate GetUpdate(JsonElement jsonElement)
         {
