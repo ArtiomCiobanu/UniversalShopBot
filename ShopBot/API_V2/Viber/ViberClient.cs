@@ -14,11 +14,6 @@ namespace ShopBot.API_V2.Viber
             throw new NotImplementedException();
         }
 
-        public Task EditTextMessageAsync(long chatId, int messageId, string text)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<string> GetWebhookInfoJsonAsync()
         {
             throw new NotImplementedException();
@@ -30,6 +25,11 @@ namespace ShopBot.API_V2.Viber
         }
 
         public Task SetWebhookAsync(string url)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task EditTextMessageAsync(long chatId, int messageId, string text, KeyboardMarkup keyboard = null)
         {
             throw new NotImplementedException();
         }

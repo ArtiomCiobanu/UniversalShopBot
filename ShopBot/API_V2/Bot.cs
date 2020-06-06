@@ -109,37 +109,5 @@ namespace ShopBot.API_V2
             WebHookUrl = webHookUrl;
             SetWebhook().Wait();
         }
-        /// <summary>
-        /// Initializes the Bot with the specified token and commands
-        /// </summary>
-        /// <param name="token"></param>
-        /// <param name="commands"></param>
-        public Bot(string token, string name, List<ICommand> commands)
-        {
-            Name = name;
-            StepPool = new List<IStep>();
-            Token = token;
-            Commands = commands.AsReadOnly();
-
-            InitializeBotClient(token);
-        }
-        /// <summary>
-        /// Initializes the Bot with the specified token and commands and sets the webhook
-        /// </summary>
-        /// <param name="token"></param>
-        /// <param name="webHookUrl"></param>
-        /// <param name="commands"></param>
-        public Bot(string token, string name, string webHookUrl, List<ICommand> commands)
-        {
-            Name = name;
-            StepPool = new List<IStep>();
-            Token = token;
-            Commands = commands.AsReadOnly();
-
-            InitializeBotClient(token);
-
-            WebHookUrl = webHookUrl;
-            SetWebhook().Wait();
-        }
     }
 }

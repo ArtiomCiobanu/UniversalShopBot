@@ -31,9 +31,10 @@ namespace ShopBot.API_V2.Telegram
             InlineKeyboardMarkup keyboardMarkup = GetInlineKeyboardMarkup(keyboard);
             await Client.SendTextMessageAsync(chatId, text, replyToMessageId: replyToMessageId, replyMarkup: keyboardMarkup);
         }
-        public async Task EditTextMessageAsync(long chatId, int messageId, string messageText)
+        public async Task EditTextMessageAsync(long chatId, int messageId, string messageText, KeyboardMarkup keyboard = null)
         {
-            await Client.EditMessageTextAsync(chatId, messageId, messageText);
+            InlineKeyboardMarkup keyboardMarkup = GetInlineKeyboardMarkup(keyboard);
+            await Client.EditMessageTextAsync(chatId, messageId, messageText, replyMarkup: keyboardMarkup);
         }
 
         private InlineKeyboardMarkup GetInlineKeyboardMarkup(KeyboardMarkup keyboardMarkup)

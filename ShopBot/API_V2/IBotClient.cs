@@ -15,6 +15,6 @@ namespace ShopBot.API_V2
 
         Task SendTextMessageAsync(long chatId, string text, int replyToMessageId = 0, KeyboardMarkup keyboard = null);
 
-        Task EditTextMessageAsync(long chatId, int messageId, string text);
+        Task EditTextMessageAsync(long chatId, int messageId, string text, KeyboardMarkup keyboard = null);
     }
 }

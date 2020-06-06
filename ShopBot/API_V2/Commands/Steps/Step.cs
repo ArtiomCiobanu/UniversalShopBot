@@ -20,13 +20,13 @@ namespace ShopBot.API_V2.Commands.Steps
         public IBotClient BotClient { get; }
 
 
-        public async Task SendMessageAsync(string messageText, int replyToMessageId = 0, KeyboardMarkup keyboard = null)
+        public async Task SendMessageAsync(string messageText, int replyToMessageId = 0, KeyboardMarkup keyboardMarkup = null)
         {
-            await BotClient.SendTextMessageAsync(ChatId, messageText, replyToMessageId, keyboard);
+            await BotClient.SendTextMessageAsync(ChatId, messageText, replyToMessageId, keyboardMarkup);
         }
-        public async Task EditMessageAsync(string messageText, int callbackMessageId)
+        public async Task EditMessageAsync(string messageText, int callbackMessageId, KeyboardMarkup keyboardMarkup = null)
         {
-            await BotClient.EditTextMessageAsync(ChatId, callbackMessageId, messageText);
+            await BotClient.EditTextMessageAsync(ChatId, callbackMessageId, messageText, keyboardMarkup);
         }
 
         public Step(BotUpdate update, IBotClient client)

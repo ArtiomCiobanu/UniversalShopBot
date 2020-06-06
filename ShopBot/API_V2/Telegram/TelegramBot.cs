@@ -20,14 +20,5 @@ namespace ShopBot.API_V2.Telegram
         {
 
         }
-        public TelegramBot(string token, string name, List<ICommand> commands) : base(token, name, commands)
-        {
-
-        }
-        public TelegramBot(string token, string name, string webHookUrl, List<ICommand> commands) :
-            base(token, name, webHookUrl, commands)
-        {
-
-        }
     }
 }

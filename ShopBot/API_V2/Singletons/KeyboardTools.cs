@@ -13,5 +13,11 @@ namespace ShopBot.API_V2.Singletons
         {
             return Catalogue.Categories.Select(c => new KeyboardButtonInfo(c.Name, c.Id)).ToArray();
         }
+        public static KeyboardButtonInfo[] GetProductsButtonRow(string categoryName, string commandName)
+        {
+            var categoryId = Catalogue.Categories.SingleOrDefault(c => c.Name == categoryName).Id;
+
+            return Catalogue.Products.Where(p => p.CategoryId == categoryId).Select(p => new KeyboardButtonInfo(p.Name, p.Id)).ToArray();
+        }
     }
 }
