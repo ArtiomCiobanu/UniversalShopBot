@@ -15,7 +15,7 @@ namespace ShopBot.API_V2.Commands.Steps
         IBotClient BotClient { get; }
         Task Execute(BotUpdate update, IBotClient client);
 
-        Task SendMessageAsync(string messageText);
+        Task SendMessageAsync(string messageText, int replyToMessageId = 0, KeyboardMarkup keyboard = null);
         Task EditMessageAsync(string messageText, int callbackMessageId);
 
         //Task SendMessageAsync(string message, InlineKeyboardMarkup replyMarkup = null);

@@ -37,12 +37,14 @@ namespace ShopBot
 
             TelegramBot telegramBot = new TelegramBot("1158660778:AAEi0BoYtLIRBbfrNh6LmDbv7Lko3SIjppg",
                 "MainTelegramBot",
-                "https://shoptelegrambot.azurewebsites.net/TelegramBot/Update",
-                new List<ICommand>()
+                "https://shoptelegrambot.azurewebsites.net/TelegramBot/Update");
+            
+            telegramBot.SetCommands(new List<ICommand>()
                 {
                     new StartCommand(),
                     new HelpCommand(),
-                    new HelloCommand()
+                    new HelloCommand(),
+                    new OrderCommand(telegramBot.StepPool)
                 });
             BotFactory.AddBot(telegramBot);
 

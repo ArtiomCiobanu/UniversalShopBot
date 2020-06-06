@@ -12,5 +12,9 @@ namespace ShopBot.API_V2.Models
         public int MessageId { get; set; }
         public string CallbackData { get; set; }
         public int CallbackMessageId { get; set; }
+
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string FullName => $"{FirstName} {LastName}";
     }
 }
