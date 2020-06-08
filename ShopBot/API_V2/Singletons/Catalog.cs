@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ShopBot.API_V2.Singletones
 {
-    public static class Catalogue
+    public static class Catalog
     {
         public static Category[] Categories => new[]
         {

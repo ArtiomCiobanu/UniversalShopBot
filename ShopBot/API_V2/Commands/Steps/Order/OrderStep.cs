@@ -12,13 +12,9 @@ namespace ShopBot.API_V2.Commands.Steps.Order
 
         public OrderData Data { get; }
 
-        public OrderStep(BotUpdate update, IBotClient client) : base(update, client)
+        public OrderStep(BotUpdate update, IBotClient client) : base(update.ChatId, client)
         {
             Data = new OrderData(update.FullName);
-        }
-        public OrderStep(BotUpdate update, IBotClient client, OrderData data) : base(update, client)
-        {
-            Data = data;
         }
         public OrderStep(long chatId, string fullName, IBotClient client) : base(chatId, client)
         {

@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ShopBot.API_V2.Commands;
+using ShopBot.API_V2.Commands.Steps;
 using ShopBot.API_V2.Singletons;
 using ShopBot.API_V2.Telegram;
 using ShopBot.Controllers;
@@ -38,13 +39,14 @@ namespace ShopBot
             TelegramBot telegramBot = new TelegramBot("1158660778:AAEi0BoYtLIRBbfrNh6LmDbv7Lko3SIjppg",
                 "MainTelegramBot",
                 "https://shoptelegrambot.azurewebsites.net/TelegramBot/Update");
-            
+
             telegramBot.SetCommands(new List<ICommand>()
                 {
                     new StartCommand(),
                     new HelpCommand(),
                     new HelloCommand(),
-                    new OrderCommand(telegramBot.StepPool)
+                    new OrderCommand(telegramBot.StepPool),
+                    new CatalogueCommand(telegramBot.StepPool)
                 });
             BotFactory.AddBot(telegramBot);
 

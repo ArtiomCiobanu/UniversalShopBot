@@ -13,10 +13,9 @@ namespace ShopBot.API_V2.Commands.Steps.Order
 
         public override async Task Execute(BotUpdate update, IBotClient client)
         {
-            NextStep = new SpecifyOrderProductsStep(update, BotClient, Data);
+            NextStep = new SpecifyOrderProductsStep(ChatId, BotClient, Data);
 
             var keyboard = new KeyboardMarkup(KeyboardTools.GetCategoriesButtonRow(CommandName));
-
             await SendMessageAsync(Message, keyboardMarkup: keyboard);
         }
 

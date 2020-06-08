@@ -29,11 +29,6 @@ namespace ShopBot.API_V2.Commands.Steps
             await BotClient.EditTextMessageAsync(ChatId, callbackMessageId, messageText, keyboardMarkup);
         }
 
-        public Step(BotUpdate update, IBotClient client)
-        {
-            ChatId = update.ChatId;
-            BotClient = client;
-        }
         public Step(long chatId, IBotClient client)
         {
             ChatId = chatId;

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Telegram.Bot.Types;
 
 namespace ShopBot.API_V2.Commands.Steps.Order
 {
@@ -14,14 +15,14 @@ namespace ShopBot.API_V2.Commands.Steps.Order
 
         public override async Task Execute(BotUpdate update, IBotClient client)
         {
-            Data.Category = Catalogue.GetCategoryName(update.CallbackData);
-            NextStep = null; //new SpecifyPhoneStep(ChatId, BotClient, Data);
+            Data.Category = Catalog.GetCategoryName(update.CallbackData);
+            NextStep = new SpecifyPhoneStep(ChatId, BotClient, Data);
 
             var keyboard = new KeyboardMarkup(KeyboardTools.GetProductsButtonRow(Data.Category, CommandName));
             await EditMessageAsync(Message, update.CallbackMessageId, keyboard);
         }
 
-        public SpecifyOrderProductsStep(BotUpdate update, IBotClient client, OrderData data) : base(update, client, data)
+        public SpecifyOrderProductsStep(long chatId, IBotClient client, OrderData data) : base(chatId, client, data)
         {
 
         }
