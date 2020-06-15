@@ -15,22 +15,16 @@ namespace ShopBot.API_V2.Commands.Steps.Catalogue
 
         public override async Task Execute(BotUpdate update, IBotClient client)
         {
-
-            var selectedCategoryName = (update.CallbackData == "Back") ?
+            var selectedCategoryName = (update.CallbackData == "catalogue Back") ?
                 Catalog.GetCategoryNameByProductId(CategoryId) : Catalog.GetCategoryName(update.CallbackData);
 
-            /*var keyboard = new InlineKeyboardButton[][]
-            {
-                ReplyKeyboardTools.GetProductsButtonRow(selectedCategoryName,CommandName),
-                ReplyKeyboardTools.GetBackButton(CommandName).ToArray()
-            };*/
             var keyboard = new KeyboardMarkup(new KeyboardButtonInfo[][]
             {
                 KeyboardTools.GetProductsButtonRow(selectedCategoryName,CommandName),
                 new KeyboardButtonInfo[]{ KeyboardTools.GetBackButton(CommandName) }
             });
 
-            NextStep = null; //new DescribeProductStep(ChatId, client, selectedCategoryName);
+            NextStep = new DescribeProductStep(ChatId, client, selectedCategoryName);
 
             await EditMessageAsync(string.Format(Message, selectedCategoryName), update.CallbackMessageId, keyboard);
         }

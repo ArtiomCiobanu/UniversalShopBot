@@ -10,7 +10,9 @@ namespace ShopBot.API_V2.Commands
     public abstract class MultiStepCommand : Command
     {
         public List<IStep> StepPool { get; private set; }
+
         public abstract IStep GetInitialStep(BotUpdate update, IBotClient client);
+
         public override bool MustBeExecutedForUpdate(BotUpdate update)
         {
             var message = update.MessageText;

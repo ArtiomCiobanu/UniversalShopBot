@@ -27,6 +27,14 @@ namespace ShopBot.API_V2.Singletons
                new KeyboardButtonInfo[]{ GetCancellationButton(commandName) }
             };
         }
+        public static KeyboardButtonInfo[][] GetOrderAndBackButtons(string product, string commandName)
+        {
+            return new KeyboardButtonInfo[][]
+            {
+                new KeyboardButtonInfo[]{ GetOrderButton(product,commandName) },
+                new KeyboardButtonInfo[]{ GetBackButton(commandName)}
+            };
+        }
 
         public static KeyboardButtonInfo GetConfirmationButton(string commandName)
         {
@@ -39,6 +47,10 @@ namespace ShopBot.API_V2.Singletons
         public static KeyboardButtonInfo GetBackButton(string commandName)
         {
             return new KeyboardButtonInfo("« Вернуться назад", $"{commandName} Back");
+        }
+        public static KeyboardButtonInfo GetOrderButton(string product, string commandName)
+        {
+            return new KeyboardButtonInfo("Заказать", $"{commandName} Order");
         }
     }
 }

@@ -16,7 +16,8 @@ namespace ShopBot.API_V2.Commands.Steps.Catalogue
             var keyboard = new KeyboardMarkup(KeyboardTools.GetCategoriesButtonRow(CommandName));
             NextStep = new ShowCatalogueProductsStep(ChatId, BotClient);
 
-            if (update.CallbackData == "Back")
+
+            if (update.CallbackData == "catalogue Back")
             {
                 await EditMessageAsync(Message, update.CallbackMessageId, keyboard);
             }
