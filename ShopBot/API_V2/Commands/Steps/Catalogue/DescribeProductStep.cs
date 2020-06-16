@@ -26,7 +26,7 @@ namespace ShopBot.API_V2.Commands.Steps.Catalogue
                 Data.Product = Catalog.GetProductName(update.CallbackData);
                 var backButton = new KeyboardMarkup(KeyboardTools.GetOrderAndBackButtons(Data.Product, CommandName));
 
-                NextStep = null;//new ReturnOrOrderStep(Data, update.CallbackData, ChatId, client);
+                NextStep = new ReturnOrOrderStep(Data, update.CallbackData, ChatId, client);
 
                 await EditMessageAsync($"{Message} {Data.Product}", update.CallbackMessageId, backButton);
             }

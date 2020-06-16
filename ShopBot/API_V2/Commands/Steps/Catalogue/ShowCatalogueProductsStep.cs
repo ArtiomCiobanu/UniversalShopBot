@@ -33,5 +33,9 @@ namespace ShopBot.API_V2.Commands.Steps.Catalogue
         {
 
         }
+        public ShowCatalogueProductsStep(string categoryId, long chatId, IBotClient client) : base(chatId, client)
+        {
+            CategoryId = categoryId;
+        }
     }
 }
