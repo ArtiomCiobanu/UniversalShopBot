@@ -11,22 +11,19 @@ namespace ShopBot.API_V2.Commands.Steps.Order
         public override string Message => "Заказ оформлен! Наш курьер скоро с вами свяжется.";
         public string CancellationMessage => "Вы отменили заказ.\nМожете оформить заново командой /order";
 
-        public override async Task Execute(BotUpdate update, IBotClient client)
+        private async Task ConfirmedAction(BotUpdate update, IBotClient client)
         {
-            string command = update.CallbackData.Split()[1];
-            if (command == "Confirmed")
-            {
-                await EditMessageAsync(Message, update.CallbackMessageId);
-            }
-            else if (command == "Cancelled")
-            {
-                await EditMessageAsync(CancellationMessage, update.CallbackMessageId);
-            }
+            await EditMessageAsync(Message, update.CallbackMessageId);
+        }
+        private async Task CancelledAction(BotUpdate update, IBotClient client)
+        {
+            await EditMessageAsync(CancellationMessage, update.CallbackMessageId);
         }
 
         public FinishOrderStep(long chatId, IBotClient client, OrderData data) : base(chatId, client, data)
         {
-
+            CallbackActions.Add("Confirmed", ConfirmedAction);
+            CallbackActions.Add("Cancelled", CancelledAction);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace ShopBot.API_V2.Commands.Steps.Order
     {
         public override string Message => $"Вы выбрали {Data.Category}\nТеперь выберите товар:";
 
-        public override async Task Execute(BotUpdate update, IBotClient client)
+        public override async Task MainAction(BotUpdate update, IBotClient clien)
         {
             Data.Category = Catalog.GetCategoryName(update.CallbackData);
             NextStep = new SpecifyPhoneStep(ChatId, BotClient, Data);

@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using ShopBot.API.Commands.Steps.CatalogueSteps;
 using ShopBot.API_V2.Models;
 using System;
 using System.Collections.Generic;

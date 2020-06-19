@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
-using ShopBot.API_V2.Models;
+﻿using ShopBot.API_V2.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +11,48 @@ namespace ShopBot.API_V2.Commands.Steps
         public abstract string CommandName { get; }
         public abstract string Message { get; }
 
-        public abstract Task Execute(BotUpdate update, IBotClient client);
+        /// <summary>
+        /// Actions invoked for keyboard callbacks
+        /// </summary>
+        public Dictionary<string, Func<BotUpdate, IBotClient, Task>> CallbackActions { get; }
 
+        /// <summary>
+        /// An action that is always invoked after callback actions and not depending on them
+        /// </summary>
+        public virtual Task MainAction(BotUpdate update, IBotClient client) => Task.Run(() => { });
+        /// <summary>
+        /// An action invoked if no action has been invoked for a keyboard callback
+        /// </summary>
+        public virtual Task DefaultAction(BotUpdate update, IBotClient client) => Task.Run(() => { });
+
+        public async Task Execute(BotUpdate update, IBotClient client)
+        {
+            if (CallbackActions.Count > 0)
+            {
+                Func<BotUpdate, IBotClient, Task> action = null;
+
+                var callbackWords = update.CallbackData != null ? update.CallbackData.Split() : null;
+                if (callbackWords != null && callbackWords[0] == CommandName)
+                {
+                    action = CallbackActions.SingleOrDefault(a => !string.IsNullOrEmpty(a.Key) && a.Key == callbackWords[1]).Value;
+                    if (action != null)
+                    {
+                        await action.Invoke(update, client);
+                    }
+                }
+
+                if (action == null)
+                {
+                    await DefaultAction(update, client);
+                }
+            }
+
+            await MainAction(update, client);
+        }
 
         public long ChatId { get; }
         public IStep NextStep { get; set; } = null;
         public IBotClient BotClient { get; }
-
 
         public async Task SendMessageAsync(string messageText, int replyToMessageId = 0, KeyboardMarkup keyboardMarkup = null)
         {
@@ -33,6 +67,8 @@ namespace ShopBot.API_V2.Commands.Steps
         {
             ChatId = chatId;
             BotClient = client;
+
+            CallbackActions = new Dictionary<string, Func<BotUpdate, IBotClient, Task>>();
         }
     }
 }

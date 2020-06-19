@@ -14,7 +14,7 @@ namespace ShopBot.API_V2.Commands.Steps.Order
             $"Ваш телефон: {Data.PhoneNumber}\n" +
             "Теперь введите свой адрес:";
 
-        public override async Task Execute(BotUpdate update, IBotClient client)
+        public override async Task MainAction(BotUpdate update, IBotClient clien)
         {
             Data.PhoneNumber = update.MessageText;
             NextStep = new ConfirmOrderStep(ChatId, BotClient, Data);

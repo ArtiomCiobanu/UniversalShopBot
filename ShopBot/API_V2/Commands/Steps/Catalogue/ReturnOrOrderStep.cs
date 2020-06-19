@@ -1,8 +1,5 @@
 ﻿using ShopBot.API_V2.Commands.Steps.Order;
 using ShopBot.API_V2.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ShopBot.API_V2.Commands.Steps.Catalogue
@@ -13,28 +10,38 @@ namespace ShopBot.API_V2.Commands.Steps.Catalogue
         public string SelectedCategoryId { get; }
         public OrderData Data { get; private set; }
 
-        public override async Task Execute(BotUpdate update, IBotClient client)
+        private Task BackAction(BotUpdate update, IBotClient client)
         {
-            IStep next = null;
-            if (update.CallbackData == "catalogue Back")
+            return Task.Run(() =>
             {
-                next = new ShowCatalogueProductsStep(SelectedCategoryId, ChatId, client);
-            }
-            else if (update.CallbackData == "catalogue Order")
+                NextStep = new ShowCatalogueProductsStep(SelectedCategoryId, ChatId, client);
+            });
+        }
+        private Task OrderAction(BotUpdate update, IBotClient client)
+        {
+            return Task.Run(() =>
             {
                 Data.SetFullName(update.FullName);
                 update.CallbackData = SelectedCategoryId;
-                next = new SpecifyPhoneStep(ChatId, client, Data);
-            }
-
-            await next.Execute(update, client);
-            NextStep = next.NextStep;
+                NextStep = new SpecifyPhoneStep(ChatId, client, Data);
+            });
         }
+
+        public override async Task MainAction(BotUpdate update, IBotClient client)
+        {
+            await NextStep.Execute(update, client);
+            NextStep = NextStep.NextStep;
+        }
+
+        public override Task DefaultAction(BotUpdate update, IBotClient client) => null;
 
         public ReturnOrOrderStep(OrderData data, string categoryID, long chatId, IBotClient client) : base(chatId, client)
         {
             SelectedCategoryId = categoryID;
             Data = data;
+
+            CallbackActions.Add("Back", BackAction);
+            CallbackActions.Add("Order", OrderAction);
         }
     }
 }

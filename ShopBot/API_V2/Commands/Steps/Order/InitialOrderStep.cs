@@ -11,7 +11,7 @@ namespace ShopBot.API_V2.Commands.Steps.Order
     {
         public override string Message => "Отлично! Выберите категорию:";
 
-        public override async Task Execute(BotUpdate update, IBotClient client)
+        public override async Task MainAction(BotUpdate update, IBotClient clien)
         {
             NextStep = new SpecifyOrderProductsStep(ChatId, BotClient, Data);
 

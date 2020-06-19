@@ -17,7 +17,7 @@ namespace ShopBot.API_V2.Commands.Steps.Order
                  $"Адрес: {Data.Adress}\n";
         public string IsItCorrectMessage => "Всё правильно? Тогда можете подтвердить оформление заказа:";
 
-        public override async Task Execute(BotUpdate update, IBotClient client)
+        public override async Task MainAction(BotUpdate update, IBotClient clien)
         {
             Data.Adress = update.MessageText;
             NextStep = new FinishOrderStep(ChatId, BotClient, Data);
