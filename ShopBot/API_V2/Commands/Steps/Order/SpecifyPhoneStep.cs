@@ -12,7 +12,7 @@ namespace ShopBot.API_V2.Commands.Steps.Order
 
         public override async Task MainAction(BotUpdate update, IBotClient clien)
         {
-            Data.Product = Catalog.GetProductName(update.CallbackData);
+            Data.Product = Catalog.GetProductName(update.CallbackData.Split()[1]);
             NextStep = new SpecifyAdressStep(ChatId, BotClient, Data);
 
             await EditMessageAsync(Message, update.CallbackMessageId);

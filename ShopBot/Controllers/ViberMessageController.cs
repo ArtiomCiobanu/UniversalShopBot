@@ -14,10 +14,5 @@ namespace ShopBot.Controllers
     public class ViberMessageController : BotController
     {
         public override string BotName => "MainViberBot";
-
-        public override BotUpdate GetUpdate(JsonElement jsonElement)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

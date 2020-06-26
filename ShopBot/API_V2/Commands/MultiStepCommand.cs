@@ -3,6 +3,7 @@ using ShopBot.API_V2.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 
 namespace ShopBot.API_V2.Commands
@@ -32,15 +33,16 @@ namespace ShopBot.API_V2.Commands
             IStep step = null;
             if (ContainsCommandName(message))
             {
-                StepPool.Where(s => s.ChatId == update.ChatId && s.CommandName == Name)
-                    .ToList().ForEach(s => StepPool.Remove(s));
+                /*StepPool.Where(s => s.ChatId == update.ChatId && s.CommandName == Name)
+                    .ToList().ForEach(s => StepPool.Remove(s));*/
+                StepPool.Where(s => s.ChatId == update.ChatId).ToList().ForEach(s => StepPool.Remove(s));
 
                 step = GetInitialStep(update, client);
             }
             else if (!string.IsNullOrEmpty(callbackData) && ContainsCommandName(callbackData) &&
                         StepPool.Any(s => s.ChatId == update.ChatId && s.CommandName == Name))
             {
-                callbackData = callbackData.Remove(0, Name.Length + 1);
+                //callbackData = callbackData.Remove(0, Name.Length + 1);
 
                 step = StepPool.SingleOrDefault(s => s.ChatId == update.ChatId && s.CommandName == Name);
                 StepPool.Remove(step);

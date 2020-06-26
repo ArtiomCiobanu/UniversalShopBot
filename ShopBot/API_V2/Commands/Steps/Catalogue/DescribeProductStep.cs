@@ -22,7 +22,7 @@ namespace ShopBot.API_V2.Commands.Steps.Catalogue
 
         public override async Task DefaultAction(BotUpdate update, IBotClient client)
         {
-            Data.Product = Catalog.GetProductName(update.CallbackData);
+            Data.Product = Catalog.GetProductName(update.CallbackData.Split()[1]);
             var backButton = new KeyboardMarkup(KeyboardTools.GetOrderAndBackButtons(Data.Product, CommandName));
 
             NextStep = new ReturnOrOrderStep(Data, update.CallbackData, ChatId, client);

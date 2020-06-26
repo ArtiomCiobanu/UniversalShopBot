@@ -26,6 +26,8 @@ namespace ShopBot.API_V2
         public Task SetWebhook(string webhookUrl);
         public Task DeleteWebhook();
 
+        public BotUpdate GetUpdate(JsonElement jsonElement);
+
         public bool FindCommandAndExecute(BotUpdate updateMessage);
         public ICommand FindCommandByNameInMessage(string message);
         public void ExecuteCommandStepForUpdate(BotUpdate update);

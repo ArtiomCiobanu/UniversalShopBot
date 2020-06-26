@@ -15,7 +15,7 @@ namespace ShopBot.API_V2.Commands.Steps.Order
 
         public override async Task MainAction(BotUpdate update, IBotClient clien)
         {
-            Data.Category = Catalog.GetCategoryName(update.CallbackData);
+            Data.Category = Catalog.GetCategoryName(update.CallbackData.Split()[1]);
             NextStep = new SpecifyPhoneStep(ChatId, BotClient, Data);
 
             var keyboard = new KeyboardMarkup(KeyboardTools.GetProductsButtonRow(Data.Category, CommandName));

@@ -15,8 +15,6 @@ namespace ShopBot.Controllers
         public abstract string BotName { get; }
         public IBot ControllerBot => BotFactory.BotDictionary[BotName];
 
-        public abstract BotUpdate GetUpdate(JsonElement jsonElement);
-
         [HttpGet]
         public string Test()
         {
@@ -46,7 +44,7 @@ namespace ShopBot.Controllers
         [HttpPost]
         public void Update([FromBody] JsonElement input)
         {
-            BotUpdate update = GetUpdate(input);
+            BotUpdate update = ControllerBot.GetUpdate(input);
 
             if (!ControllerBot.FindCommandAndExecute(update))
             {

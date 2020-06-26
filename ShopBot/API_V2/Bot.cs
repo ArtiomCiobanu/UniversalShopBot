@@ -42,6 +42,8 @@ namespace ShopBot.API_V2
             await Client.DeleteWebhookAsync();
         }
 
+        public abstract BotUpdate GetUpdate(JsonElement jsonElement);
+
         public void ExecuteCommandStepForUpdate(BotUpdate update)
         {
             foreach (var c in Commands)

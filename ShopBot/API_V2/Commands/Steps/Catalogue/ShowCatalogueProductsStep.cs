@@ -39,7 +39,7 @@ namespace ShopBot.API_V2.Commands.Steps.Catalogue
         {
             return Task.Run(() =>
             {
-                SelectedCategoryName = Catalog.GetCategoryName(update.CallbackData);
+                SelectedCategoryName = Catalog.GetCategoryName(update.CallbackData.Split()[1]);
             });
         }
 

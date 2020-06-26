@@ -19,33 +19,5 @@ namespace ShopBot.Controllers
     public class TelegramMessageController : BotController
     {
         public override string BotName => "MainTelegramBot";
-
-        public override BotUpdate GetUpdate(JsonElement jsonElement)
-        {
-            Update update = JsonConvert.DeserializeObject<Update>(jsonElement.ToString());
-
-            BotUpdate botUpdate = new BotUpdate();
-            Message message = null;
-            if (update.Message != null)
-            {
-                message = update.Message;
-                botUpdate.MessageId = update.Message.MessageId;
-
-                botUpdate.CallbackData = null;
-                botUpdate.CallbackMessageId = 0;
-            }
-            else
-            {
-                message = update.CallbackQuery.Message;
-
-                botUpdate.CallbackData = update.CallbackQuery.Data;
-                botUpdate.CallbackMessageId = update.CallbackQuery.Message.MessageId;
-            }
-
-            botUpdate.MessageText = message.Text;
-            botUpdate.ChatId = message.Chat.Id;
-
-            return botUpdate;
-        }
     }
 }
