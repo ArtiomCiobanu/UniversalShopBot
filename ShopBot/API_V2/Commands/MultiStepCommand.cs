@@ -2,6 +2,7 @@
 using ShopBot.API_V2.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ShopBot.API_V2.Commands
 {
@@ -11,40 +12,36 @@ namespace ShopBot.API_V2.Commands
 
         public abstract IStep GetInitialStep(BotUpdate update, IBotClient client);
 
-        public override bool MustBeExecutedForUpdate(BotUpdate update)
+        public override bool MustBeExecutedForUpdateMessage(BotUpdate updateMessage)
         {
-            var message = update.MessageText;
-            var callbackData = update.CallbackData;
-
-            return ContainsCommandName(message) ||
-                (!string.IsNullOrEmpty(message) && StepPool.Any(s => s.ChatId == update.ChatId && s.CommandName == Name)) ||
-                (!string.IsNullOrEmpty(callbackData) && ContainsCommandName(callbackData) &&
-                    StepPool.Any(s => s.ChatId == update.ChatId && s.CommandName == Name));
+            return StepPool.Any(s => s.ChatId == updateMessage.ChatId && s.CommandName == Name);
         }
 
-        public override async void Execute(BotUpdate update, IBotClient client)
+        public override async void ExecuteMainAction(BotUpdate update, IBotClient client)
         {
-            var message = update.MessageText;
-            var callbackData = update.CallbackData;
+            StepPool.Where(s => s.ChatId == update.ChatId && s.CommandName == Name)
+                .ToList().ForEach(s => StepPool.Remove(s));
 
-            IStep step = null;
-            if (ContainsCommandName(message))
-            {
-                StepPool.Where(s => s.ChatId == update.ChatId && s.CommandName == Name)
-                    .ToList().ForEach(s => StepPool.Remove(s));
-                //StepPool.Where(s => s.ChatId == update.ChatId).ToList().ForEach(s => StepPool.Remove(s));
+            var step = GetInitialStep(update, client);
 
-                step = GetInitialStep(update, client);
-            }
-            else if (!string.IsNullOrEmpty(callbackData) && ContainsCommandName(callbackData) &&
-                        StepPool.Any(s => s.ChatId == update.ChatId && s.CommandName == Name))
+            await ExecuteStep(step, update, client);
+        }
+        public override async void ExecuteForCallback(BotUpdate update, IBotClient client)
+        {
+            var step = StepPool.SingleOrDefault(s => s.ChatId == update.ChatId && s.CommandName == Name);
+            await ExecuteStep(step, update, client);
+        }
+
+        public override async void ExecuteForMessage(BotUpdate update, IBotClient client)
+        {
+            var step = StepPool.SingleOrDefault(s => s.ChatId == update.ChatId && s.CommandName == Name);
+            await ExecuteStep(step, update, client);
+        }
+
+        private async Task ExecuteStep(IStep step, BotUpdate update, IBotClient client)
+        {
+            if (StepPool.Contains(step))
             {
-                step = StepPool.SingleOrDefault(s => s.ChatId == update.ChatId && s.CommandName == Name);
-                StepPool.Remove(step);
-            }
-            else if (!string.IsNullOrEmpty(message) && StepPool.Any(s => s.ChatId == update.ChatId && s.CommandName == Name))
-            {
-                step = StepPool.SingleOrDefault(s => s.ChatId == update.ChatId && s.CommandName == Name);
                 StepPool.Remove(step);
             }
 

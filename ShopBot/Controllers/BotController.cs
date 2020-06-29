@@ -46,10 +46,12 @@ namespace ShopBot.Controllers
         {
             BotUpdate update = ControllerBot.GetUpdate(input);
 
-            if (!ControllerBot.FindCommandAndExecute(update))
+            /*if (!ControllerBot.FindCommandAndExecute(update))
             {
                 ControllerBot.ExecuteCommandStepForUpdate(update);
-            }
+            }*/
+
+            ControllerBot.FindCommandAndExecute(update);
         }
     }
 }

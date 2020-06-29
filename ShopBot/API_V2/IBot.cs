@@ -30,6 +30,5 @@ namespace ShopBot.API_V2
 
         public bool FindCommandAndExecute(BotUpdate updateMessage);
         public ICommand FindCommandByNameInMessage(string message);
-        public void ExecuteCommandStepForUpdate(BotUpdate update);
     }
 }

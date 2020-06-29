@@ -10,7 +10,7 @@ namespace ShopBot.API_V2.Commands
     {
         public override string Name => "hello";
 
-        public override async void Execute(BotUpdate update, IBotClient client)
+        public override async void ExecuteMainAction(BotUpdate update, IBotClient client)
         {
             await client.SendTextMessageAsync(update.ChatId, "Hello!", replyToMessageId: update.MessageId);
         }

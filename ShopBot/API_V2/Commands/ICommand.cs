@@ -10,8 +10,11 @@ namespace ShopBot.API_V2.Commands
     {
         public string Name { get; }
 
-        public void Execute(BotUpdate update, IBotClient client);
-        public bool MustBeExecutedForUpdate(BotUpdate updateMessage);
+        public void ExecuteMainAction(BotUpdate update, IBotClient client);
+        public void ExecuteForCallback(BotUpdate update, IBotClient client);
+        public void ExecuteForMessage(BotUpdate update, IBotClient client);
+
+        public bool MustBeExecutedForUpdateMessage(BotUpdate updateMessage);
         public bool ContainsCommandName(string messageText);
     }
 }

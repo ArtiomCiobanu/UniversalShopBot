@@ -3,6 +3,7 @@ using ShopBot.API_V2.Commands.Steps;
 using ShopBot.API_V2.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -44,30 +45,55 @@ namespace ShopBot.API_V2
 
         public abstract BotUpdate GetUpdate(JsonElement jsonElement);
 
-        public void ExecuteCommandStepForUpdate(BotUpdate update)
-        {
-            foreach (var c in Commands)
-            {
-                if (c.MustBeExecutedForUpdate(update))
-                {
-                    c.Execute(update, Client);
-                    break;
-                }
-            }
-        }
         public bool FindCommandAndExecute(BotUpdate update)
         {
-            var command = FindCommandByNameInMessage(update.MessageText);
+            var command = Commands.SingleOrDefault(c => c.ContainsCommandName(update.MessageText));
+
             if (command != null)
             {
-                command.Execute(update, Client);
+                command.ExecuteMainAction(update, Client);
                 return true;
+            }
+            else if (!string.IsNullOrEmpty(update.CallbackData))
+            {
+                var commandForCallback = Commands.SingleOrDefault(c =>
+                c.ContainsCommandName(update.CallbackData));
+
+                if (commandForCallback != null)
+                {
+                    commandForCallback.ExecuteForCallback(update, Client);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else if (!string.IsNullOrEmpty(update.MessageText))
+            {
+                var commandForMessage = Commands.SingleOrDefault(c => c.MustBeExecutedForUpdateMessage(update));
+
+                if (commandForMessage != null)
+                {
+                    commandForMessage.ExecuteForMessage(update, Client);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
                 return false;
             }
         }
+        /// <summary>
+        /// Returns the command with the command name in the specified string.
+        /// Returns null if the string doesn't contain any command name
+        /// </summary>
+        /// <param name="messageText"></param>
+        /// <returns></returns>
         public ICommand FindCommandByNameInMessage(string messageText)
         {
             if (string.IsNullOrEmpty(messageText))

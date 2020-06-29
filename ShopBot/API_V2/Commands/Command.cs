@@ -11,12 +11,15 @@ namespace ShopBot.API_V2.Commands
     {
         public abstract string Name { get; }
 
-        public abstract void Execute(BotUpdate update, IBotClient client);
-        public virtual bool MustBeExecutedForUpdate(BotUpdate update)
-        {
-            return (update.MessageText != null) ? ContainsCommandName(update.MessageText) : false;
-        }
+        //Убрать
+        public abstract void ExecuteMainAction(BotUpdate update, IBotClient client);
+        public virtual void ExecuteForCallback(BotUpdate update, IBotClient client) => ExecuteMainAction(update, client);
+        public virtual void ExecuteForMessage(BotUpdate update, IBotClient client) => ExecuteMainAction(update, client);
 
+        public virtual bool MustBeExecutedForUpdateMessage(BotUpdate updateMessage)
+        {
+            return (updateMessage.MessageText != null) ? ContainsCommandName(updateMessage.MessageText) : false;
+        }
         public bool ContainsCommandName(string messageText)
         {
             if (string.IsNullOrEmpty(messageText))

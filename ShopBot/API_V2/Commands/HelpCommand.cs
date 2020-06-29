@@ -10,7 +10,7 @@ namespace ShopBot.API_V2.Commands
     {
         public override string Name => "help";
 
-        public override async void Execute(BotUpdate update, IBotClient client)
+        public override async void ExecuteMainAction(BotUpdate update, IBotClient client)
         {
             var chatId = update.ChatId;
 
