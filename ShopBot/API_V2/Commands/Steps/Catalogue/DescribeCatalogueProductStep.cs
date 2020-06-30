@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 
 namespace ShopBot.API_V2.Commands.Steps.Catalogue
 {
-    public class DescribeProductStep : CatalogueStep
+    public class DescribeCatalogueProductStep : CatalogueStep
     {
         public override string Message => "Это описание невероятного";
-        public OrderData Data { get; private set; } = new OrderData();
 
         private async Task BackAction(BotUpdate update, IBotClient client)
         {
@@ -22,19 +21,17 @@ namespace ShopBot.API_V2.Commands.Steps.Catalogue
 
         public override async Task DefaultAction(BotUpdate update, IBotClient client)
         {
-            Data.Product = Catalog.GetProductName(update.CallbackData.Split()[1]);
-            var backButton = new KeyboardMarkup(KeyboardTools.GetOrderAndBackButtons(Data.Product, CommandName));
+            Data.ProductId = update.CallbackData.Split()[1];
 
-            NextStep = new ReturnOrOrderStep(Data, update.CallbackData, ChatId, client);
+            var backButton = new KeyboardMarkup(KeyboardTools.GetOrderAndBackButtons(Data.ProductName, CommandName));
 
-            await EditMessageAsync($"{Message} {Data.Product}", update.CallbackMessageId, backButton);
+            NextStep = new ReturnOrOrderCatalogueStep(Data, ChatId, client);
+
+            await EditMessageAsync($"{Message} {Data.ProductName}", update.CallbackMessageId, backButton);
         }
 
-        public DescribeProductStep(long chatId, IBotClient client, string selectedCategory) :
-            base(chatId, client)
+        public DescribeCatalogueProductStep(long chatId, IBotClient client, OrderData data) : base(chatId, client, data)
         {
-            Data.Category = selectedCategory;
-
             CallbackActions.Add("Back", BackAction);
         }
     }

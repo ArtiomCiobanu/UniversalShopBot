@@ -42,16 +42,36 @@ namespace ShopBot.Controllers
             return Ok(ControllerBot.WebHookInfo);
         }
         [HttpPost]
-        public void Update([FromBody] JsonElement input)
+        public OkResult Update([FromBody] JsonElement input)
         {
-            BotUpdate update = ControllerBot.GetUpdate(input);
-
-            /*if (!ControllerBot.FindCommandAndExecute(update))
+            Task.Run(() =>
             {
-                ControllerBot.ExecuteCommandStepForUpdate(update);
-            }*/
+                BotUpdate update = ControllerBot.GetUpdate(input);
 
-            ControllerBot.FindCommandAndExecute(update);
+                DateTime? date = null;
+
+                if (update.EditDate != null)
+                {
+                    date = update.EditDate;
+                }
+                else
+                {
+                    date = update.Date;
+                }
+
+                var dateDifference = DateTime.Now - (DateTime)date;
+                int minutes = dateDifference.Minutes;
+                if (minutes <= 1)
+                {
+                    ControllerBot.FindCommandAndExecute(update);
+                }
+                else
+                {
+                    //Послать сообщение, что команда была выполнена слишком давно
+                }
+            });
+
+            return Ok();
         }
     }
 }

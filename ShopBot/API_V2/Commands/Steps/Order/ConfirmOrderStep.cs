@@ -12,7 +12,7 @@ namespace ShopBot.API_V2.Commands.Steps.Order
         public override string Message =>
                  $"Итого:\n" +
                  $"Вас зовут: {Data.FullName}\n" +
-                 $"Ваш заказ: {Data.Category} - {Data.Product}\n" +
+                 $"Ваш заказ: {Data.CategoryName} - {Data.ProductName}\n" +
                  $"Телефон: {Data.PhoneNumber}\n" +
                  $"Адрес: {Data.Adress}\n";
         public string IsItCorrectMessage => "Всё правильно? Тогда можете подтвердить оформление заказа:";

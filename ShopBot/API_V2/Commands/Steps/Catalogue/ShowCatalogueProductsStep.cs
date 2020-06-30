@@ -11,47 +11,32 @@ namespace ShopBot.API_V2.Commands.Steps.Catalogue
     public class ShowCatalogueProductsStep : CatalogueStep
     {
         public override string Message => "Каталог наших товаров:\nВсе товары в {0}:";
-        public string CategoryId { get; private set; }
-
-        private string SelectedCategoryName { get; set; }
 
         public override async Task MainAction(BotUpdate update, IBotClient client)
         {
+            Data.CategoryId = update.CallbackData.Split()[1];
+
             var keyboard = new KeyboardMarkup(new KeyboardButtonInfo[][]
             {
-                KeyboardTools.GetProductsButtonRow(SelectedCategoryName,CommandName),
+                KeyboardTools.GetProductsButtonRow(Data.CategoryName, CommandName),
                 new KeyboardButtonInfo[]{ KeyboardTools.GetBackButton(CommandName) }
             });
 
-            NextStep = new DescribeProductStep(ChatId, client, SelectedCategoryName);
+            NextStep = new DescribeCatalogueProductStep(ChatId, client, Data);
 
-            await EditMessageAsync(string.Format(Message, SelectedCategoryName), update.CallbackMessageId, keyboard);
-        }
-        private Task BackAction(BotUpdate update, IBotClient client)
-        {
-            return Task.Run(() =>
-            {
-                SelectedCategoryName = Catalog.GetCategoryNameByProductId(CategoryId);
-            });
+            await EditMessageAsync(string.Format(Message, Data.CategoryName), update.CallbackMessageId, keyboard);
         }
 
         public override Task DefaultAction(BotUpdate update, IBotClient client)
         {
             return Task.Run(() =>
             {
-                SelectedCategoryName = Catalog.GetCategoryName(update.CallbackData.Split()[1]);
+                Data.CategoryId = update.CallbackData.Split()[1];
             });
         }
 
-        public ShowCatalogueProductsStep(long chatId, IBotClient client) : base(chatId, client)
+        public ShowCatalogueProductsStep(long chatId, IBotClient client, OrderData data) : base(chatId, client, data)
         {
-            CallbackActions.Add("Back", BackAction);
-        }
-        public ShowCatalogueProductsStep(string categoryId, long chatId, IBotClient client) : base(chatId, client)
-        {
-            CallbackActions.Add("Back", BackAction);
-
-            CategoryId = categoryId;
         }
     }
 }

@@ -8,11 +8,14 @@ namespace ShopBot.API_V2.Commands.Steps.Order
 {
     public class SpecifyPhoneStep : OrderStep
     {
-        public override string Message => $"Вы выбрали:\n{Data.Product} - {Data.Category}\nТеперь введите свой номер телефона:";
+        public override string Message => $"Вы выбрали:\n{Data.ProductName} - {Data.CategoryName}\nТеперь введите свой номер телефона:";
 
         public override async Task MainAction(BotUpdate update, IBotClient clien)
         {
-            Data.Product = Catalog.GetProductName(update.CallbackData.Split()[1]);
+            if (string.IsNullOrEmpty(Data.ProductId))
+            {
+                Data.ProductId = update.CallbackData.Split()[1];
+            }
             NextStep = new SpecifyAdressStep(ChatId, BotClient, Data);
 
             await EditMessageAsync(Message, update.CallbackMessageId);

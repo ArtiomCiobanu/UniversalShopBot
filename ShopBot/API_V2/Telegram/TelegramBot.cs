@@ -14,28 +14,34 @@ namespace ShopBot.API_V2.Telegram
 
         public override BotUpdate GetUpdate(JsonElement jsonElement)
         {
-            Update update = JsonConvert.DeserializeObject<Update>(jsonElement.ToString());
+            Update telegramUpdate = JsonConvert.DeserializeObject<Update>(jsonElement.ToString());
 
             BotUpdate botUpdate = new BotUpdate();
             Message message = null;
-            if (update.Message != null)
+            if (telegramUpdate.Message != null)
             {
-                message = update.Message;
-                botUpdate.MessageId = update.Message.MessageId;
+                message = telegramUpdate.Message;
+                botUpdate.MessageId = telegramUpdate.Message.MessageId;
 
                 botUpdate.CallbackData = null;
                 botUpdate.CallbackMessageId = 0;
             }
             else
             {
-                message = update.CallbackQuery.Message;
+                message = telegramUpdate.CallbackQuery.Message;
 
-                botUpdate.CallbackData = update.CallbackQuery.Data;
-                botUpdate.CallbackMessageId = update.CallbackQuery.Message.MessageId;
+                botUpdate.CallbackData = telegramUpdate.CallbackQuery.Data;
+                botUpdate.CallbackMessageId = telegramUpdate.CallbackQuery.Message.MessageId;
             }
 
             botUpdate.MessageText = message.Text;
             botUpdate.ChatId = message.Chat.Id;
+
+            botUpdate.FirstName = message.From.FirstName;
+            botUpdate.LastName = message.From.LastName;
+
+            botUpdate.Date = message.Date;
+            botUpdate.EditDate = message.EditDate;
 
             return botUpdate;
         }

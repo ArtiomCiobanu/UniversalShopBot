@@ -10,7 +10,7 @@ namespace ShopBot.API_V2.Commands.Steps.Order
     {
         public override string Message =>
             $"Вы выбрали:\n" +
-            $"{Data.Category} - {Data.Product}\n" +
+            $"{Data.CategoryName} - {Data.ProductName}\n" +
             $"Ваш телефон: {Data.PhoneNumber}\n" +
             "Теперь введите свой адрес:";
 

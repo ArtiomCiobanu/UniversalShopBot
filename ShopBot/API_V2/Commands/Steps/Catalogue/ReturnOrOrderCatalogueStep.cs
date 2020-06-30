@@ -4,25 +4,23 @@ using System.Threading.Tasks;
 
 namespace ShopBot.API_V2.Commands.Steps.Catalogue
 {
-    public class ReturnOrOrderStep : CatalogueStep
+    public class ReturnOrOrderCatalogueStep : CatalogueStep
     {
         public override string Message => null;
-        public string SelectedCategoryId { get; }
-        public OrderData Data { get; private set; }
 
         private Task BackAction(BotUpdate update, IBotClient client)
         {
             return Task.Run(() =>
             {
-                NextStep = new ShowCatalogueProductsStep(SelectedCategoryId, ChatId, client);
+                NextStep = new ShowCatalogueProductsStep(ChatId, client, Data);
             });
         }
         private Task OrderAction(BotUpdate update, IBotClient client)
         {
             return Task.Run(() =>
             {
-                Data.SetFullName(update.FullName);
-                update.CallbackData = SelectedCategoryId;
+                //Data.SetFullName(update.FullName);
+                //update.CallbackData = $"{CommandName} {Data.CategoryId}";
                 NextStep = new SpecifyPhoneStep(ChatId, client, Data);
             });
         }
@@ -35,9 +33,8 @@ namespace ShopBot.API_V2.Commands.Steps.Catalogue
 
         public override Task DefaultAction(BotUpdate update, IBotClient client) => null;
 
-        public ReturnOrOrderStep(OrderData data, string categoryID, long chatId, IBotClient client) : base(chatId, client)
+        public ReturnOrOrderCatalogueStep(OrderData data, long chatId, IBotClient client) : base(chatId, client)
         {
-            SelectedCategoryId = categoryID;
             Data = data;
 
             CallbackActions.Add("Back", BackAction);
