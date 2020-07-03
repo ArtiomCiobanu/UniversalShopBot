@@ -9,9 +9,11 @@ namespace ShopBot.API_V2.Models
     {
         public long ChatId { get; set; }
 
+        //Заменить на BotMessageData
         public string MessageText { get; set; }
         public int MessageId { get; set; }
 
+        //Заменить на BotCallbackData
         public string CallbackData { get; set; }
         public int CallbackMessageId { get; set; }
 

@@ -18,21 +18,18 @@ namespace ShopBot.API_V2.Commands.Steps.Catalogue
         {
             await SendMessageAsync(Message, keyboardMarkup: KeyboardMarkup);
         }
-        public override Task MainAction(BotUpdate update, IBotClient client)
+        public override Task MainAction(BotUpdate update, IBotClient client) => Task.Run(() =>
         {
-            return Task.Run(() =>
-            {
-                Data.SetFullName(update.FullName);
-                NextStep = new ShowCatalogueProductsStep(ChatId, BotClient, Data);
-            });
-        }
+            Data.SetFullName(update.FullName);
+            NextStep = new ShowCatalogueProductsStep(ChatId, BotClient, Data);
+        });
 
         public InitialCatalogueStep(long chatId, IBotClient client) : base(chatId, client)
         {
             Data = new OrderData();
 
             KeyboardMarkup = new KeyboardMarkup(KeyboardTools.GetCategoriesButtonRow(CommandName));
-           CallbackActions.Add("Back", BackAction);
+            CallbackActions.Add("Back", BackAction);
         }
     }
 }

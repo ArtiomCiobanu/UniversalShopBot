@@ -8,22 +8,14 @@ namespace ShopBot.API_V2.Commands.Steps.Catalogue
     {
         public override string Message => null;
 
-        private Task BackAction(BotUpdate update, IBotClient client)
+        private Task BackAction(BotUpdate update, IBotClient client) => Task.Run(() =>
         {
-            return Task.Run(() =>
-            {
-                NextStep = new ShowCatalogueProductsStep(ChatId, client, Data);
-            });
-        }
-        private Task OrderAction(BotUpdate update, IBotClient client)
+            NextStep = new ShowCatalogueProductsStep(ChatId, client, Data);
+        });
+        private Task OrderAction(BotUpdate update, IBotClient client) => Task.Run(() =>
         {
-            return Task.Run(() =>
-            {
-                //Data.SetFullName(update.FullName);
-                //update.CallbackData = $"{CommandName} {Data.CategoryId}";
-                NextStep = new SpecifyPhoneStep(ChatId, client, Data);
-            });
-        }
+            NextStep = new SpecifyPhoneStep(ChatId, client, Data);
+        });
 
         public override async Task MainAction(BotUpdate update, IBotClient client)
         {
