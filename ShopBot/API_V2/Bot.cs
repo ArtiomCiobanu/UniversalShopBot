@@ -45,47 +45,32 @@ namespace ShopBot.API_V2
 
         public abstract BotUpdate GetUpdate(JsonElement jsonElement);
 
-        public bool FindCommandAndExecute(BotUpdate update)
+        public void FindCommandAndExecute(BotUpdate update)
         {
-            var command = Commands.SingleOrDefault(c => c.ContainsCommandName(update.MessageText));
+            var command = Commands.SingleOrDefault(c => c.ContainsCommandName(update.Message.Text));
 
             if (command != null)
             {
                 command.ExecuteMainAction(update, Client);
-                return true;
             }
-            else if (!string.IsNullOrEmpty(update.CallbackData))
+            else if (update.Callback != null && !string.IsNullOrEmpty(update.Callback.SerializedData.Data))
             {
                 var commandForCallback = Commands.SingleOrDefault(c =>
-                c.ContainsCommandName(update.CallbackData));
+                c.ContainsCommandName(update.Callback.SerializedData.CommandName));
 
                 if (commandForCallback != null)
                 {
                     commandForCallback.ExecuteForCallback(update, Client);
-                    return true;
-                }
-                else
-                {
-                    return false;
                 }
             }
-            else if (!string.IsNullOrEmpty(update.MessageText))
+            else if (!string.IsNullOrEmpty(update.Message.Text))
             {
                 var commandForMessage = Commands.SingleOrDefault(c => c.MustBeExecutedForUpdateMessage(update));
 
                 if (commandForMessage != null)
                 {
                     commandForMessage.ExecuteForMessage(update, Client);
-                    return true;
                 }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
             }
         }
         /// <summary>

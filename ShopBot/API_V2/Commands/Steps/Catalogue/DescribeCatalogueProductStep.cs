@@ -21,13 +21,13 @@ namespace ShopBot.API_V2.Commands.Steps.Catalogue
 
         public override async Task DefaultAction(BotUpdate update, IBotClient client)
         {
-            Data.ProductId = update.CallbackData.Split()[1];
+            Data.ProductId = update.Callback.SerializedData.Data;
 
             var backButton = new KeyboardMarkup(KeyboardTools.GetOrderAndBackButtons(Data.ProductName, CommandName));
 
             NextStep = new ReturnOrOrderCatalogueStep(Data, ChatId, client);
 
-            await EditMessageAsync($"{Message} {Data.ProductName}", update.CallbackMessageId, backButton);
+            await EditMessageAsync($"{Message} {Data.ProductName}", update.Callback.MessageId, backButton);
         }
 
         public DescribeCatalogueProductStep(long chatId, IBotClient client, OrderData data) : base(chatId, client, data)

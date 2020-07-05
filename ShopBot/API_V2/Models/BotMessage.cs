@@ -5,9 +5,14 @@ using System.Threading.Tasks;
 
 namespace ShopBot.API_V2.Models
 {
-    public class BotMessageData
+    public class BotMessage
     {
-        public string MessageText { get; set; }
+        public string Text { get; set; }
         public int MessageId { get; set; }
+
+        public BotMessage()
+        {
+
+        }
     }
 }

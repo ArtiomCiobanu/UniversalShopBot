@@ -31,10 +31,10 @@ namespace ShopBot.API_V2.Commands.Steps
             {
                 Func<BotUpdate, IBotClient, Task> action = null;
 
-                var callbackWords = update.CallbackData != null ? update.CallbackData.Split() : null;
-                if (callbackWords != null && callbackWords[0] == CommandName)
+                if (update.Callback != null && update.Callback.SerializedData.CommandName == CommandName)
                 {
-                    action = CallbackActions.SingleOrDefault(a => !string.IsNullOrEmpty(a.Key) && a.Key == callbackWords[1]).Value;
+                    action = CallbackActions.SingleOrDefault(a => !string.IsNullOrEmpty(a.Key) &&
+                                            a.Key == update.Callback.SerializedData.Data).Value;
                     if (action != null)
                     {
                         await action.Invoke(update, client);

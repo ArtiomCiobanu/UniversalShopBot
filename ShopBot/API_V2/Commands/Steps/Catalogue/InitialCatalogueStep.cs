@@ -12,7 +12,7 @@ namespace ShopBot.API_V2.Commands.Steps.Catalogue
 
         private async Task BackAction(BotUpdate update, IBotClient client)
         {
-            await EditMessageAsync(Message, update.CallbackMessageId, KeyboardMarkup);
+            await EditMessageAsync(Message, update.Callback.MessageId, KeyboardMarkup);
         }
         public override async Task DefaultAction(BotUpdate update, IBotClient client)
         {

@@ -19,7 +19,7 @@ namespace ShopBot.API_V2.Commands.Steps.Order
 
         public override async Task MainAction(BotUpdate update, IBotClient clien)
         {
-            Data.Adress = update.MessageText;
+            Data.Adress = update.Message.Text;
             NextStep = new FinishOrderStep(ChatId, BotClient, Data);
 
             var keyboard = new KeyboardMarkup(KeyboardTools.GetConfirmAndCancelButtons(CommandName));

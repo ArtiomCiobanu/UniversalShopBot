@@ -17,31 +17,31 @@ namespace ShopBot.API_V2.Telegram
             Update telegramUpdate = JsonConvert.DeserializeObject<Update>(jsonElement.ToString());
 
             BotUpdate botUpdate = new BotUpdate();
-            Message message = null;
+            Message telegramMessage = null;
             if (telegramUpdate.Message != null)
             {
-                message = telegramUpdate.Message;
-                botUpdate.MessageId = telegramUpdate.Message.MessageId;
+                telegramMessage = telegramUpdate.Message;
 
-                botUpdate.CallbackData = null;
-                botUpdate.CallbackMessageId = 0;
+                botUpdate.Message.MessageId = telegramUpdate.Message.MessageId;
+
+                botUpdate.Callback = null;
             }
             else
             {
-                message = telegramUpdate.CallbackQuery.Message;
+                telegramMessage = telegramUpdate.CallbackQuery.Message;
 
-                botUpdate.CallbackData = telegramUpdate.CallbackQuery.Data;
-                botUpdate.CallbackMessageId = telegramUpdate.CallbackQuery.Message.MessageId;
+                botUpdate.Callback.SetSerializedData(telegramUpdate.CallbackQuery.Data);
+                botUpdate.Callback.MessageId = telegramUpdate.CallbackQuery.Message.MessageId;
             }
 
-            botUpdate.MessageText = message.Text;
-            botUpdate.ChatId = message.Chat.Id;
+            botUpdate.Message.Text = telegramMessage.Text;
+            botUpdate.ChatId = telegramMessage.Chat.Id;
 
-            botUpdate.FirstName = message.From.FirstName;
-            botUpdate.LastName = message.From.LastName;
+            botUpdate.FirstName = telegramMessage.From.FirstName;
+            botUpdate.LastName = telegramMessage.From.LastName;
 
-            botUpdate.Date = message.Date;
-            botUpdate.EditDate = message.EditDate;
+            botUpdate.Date = telegramMessage.Date;
+            botUpdate.EditDate = telegramMessage.EditDate;
 
             return botUpdate;
         }

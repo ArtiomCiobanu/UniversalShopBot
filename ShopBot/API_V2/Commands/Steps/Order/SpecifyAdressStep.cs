@@ -16,7 +16,7 @@ namespace ShopBot.API_V2.Commands.Steps.Order
 
         public override async Task MainAction(BotUpdate update, IBotClient clien)
         {
-            Data.PhoneNumber = update.MessageText;
+            Data.PhoneNumber = update.Message.Text;
             NextStep = new ConfirmOrderStep(ChatId, BotClient, Data);
 
             await SendMessageAsync(Message);

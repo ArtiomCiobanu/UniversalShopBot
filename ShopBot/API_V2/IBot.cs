@@ -28,7 +28,7 @@ namespace ShopBot.API_V2
 
         public BotUpdate GetUpdate(JsonElement jsonElement);
 
-        public bool FindCommandAndExecute(BotUpdate updateMessage);
+        public void FindCommandAndExecute(BotUpdate updateMessage);
         public ICommand FindCommandByNameInMessage(string message);
     }
 }

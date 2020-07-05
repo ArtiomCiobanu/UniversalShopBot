@@ -13,11 +13,11 @@ namespace ShopBot.API_V2.Commands.Steps.Order
 
         private async Task ConfirmedAction(BotUpdate update, IBotClient client)
         {
-            await EditMessageAsync(Message, update.CallbackMessageId);
+            await EditMessageAsync(Message, update.Callback.MessageId);
         }
         private async Task CancelledAction(BotUpdate update, IBotClient client)
         {
-            await EditMessageAsync(CancellationMessage, update.CallbackMessageId);
+            await EditMessageAsync(CancellationMessage, update.Callback.MessageId);
         }
 
         public FinishOrderStep(long chatId, IBotClient client, OrderData data) : base(chatId, client, data)

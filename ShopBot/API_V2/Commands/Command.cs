@@ -18,7 +18,7 @@ namespace ShopBot.API_V2.Commands
 
         public virtual bool MustBeExecutedForUpdateMessage(BotUpdate updateMessage)
         {
-            return (updateMessage.MessageText != null) ? ContainsCommandName(updateMessage.MessageText) : false;
+            return (updateMessage.Message.Text != null) ? ContainsCommandName(updateMessage.Message.Text) : false;
         }
         public bool ContainsCommandName(string messageText)
         {

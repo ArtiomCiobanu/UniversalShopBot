@@ -14,11 +14,11 @@ namespace ShopBot.API_V2.Commands.Steps.Order
         {
             if (string.IsNullOrEmpty(Data.ProductId))
             {
-                Data.ProductId = update.CallbackData.Split()[1];
+                Data.ProductId = update.Callback.SerializedData.Data;
             }
             NextStep = new SpecifyAdressStep(ChatId, BotClient, Data);
 
-            await EditMessageAsync(Message, update.CallbackMessageId);
+            await EditMessageAsync(Message, update.Callback.MessageId);
         }
 
         public SpecifyPhoneStep(long chatId, IBotClient client, OrderData data) : base(chatId, client, data)

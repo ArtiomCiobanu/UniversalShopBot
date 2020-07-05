@@ -16,7 +16,7 @@ namespace ShopBot.API_V2.Commands.Steps.Catalogue
         {
             if (string.IsNullOrEmpty(Data.CategoryId))
             {
-                Data.CategoryId = update.CallbackData.Split()[1];
+                Data.CategoryId = update.Callback.SerializedData.Data;
             }
 
             var keyboard = new KeyboardMarkup(new KeyboardButtonInfo[][]
@@ -27,12 +27,12 @@ namespace ShopBot.API_V2.Commands.Steps.Catalogue
 
             NextStep = new DescribeCatalogueProductStep(ChatId, client, Data);
 
-            await EditMessageAsync(string.Format(Message, Data.CategoryName), update.CallbackMessageId, keyboard);
+            await EditMessageAsync(string.Format(Message, Data.CategoryName), update.Callback.MessageId, keyboard);
         }
 
         public override Task DefaultAction(BotUpdate update, IBotClient client) => Task.Run(() =>
         {
-            Data.CategoryId = update.CallbackData.Split()[1];
+            Data.CategoryId = update.Callback.SerializedData.Data;
         });
 
         public ShowCatalogueProductsStep(long chatId, IBotClient client, OrderData data) : base(chatId, client, data)

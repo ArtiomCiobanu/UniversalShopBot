@@ -15,11 +15,11 @@ namespace ShopBot.API_V2.Commands.Steps.Order
 
         public override async Task MainAction(BotUpdate update, IBotClient clien)
         {
-            Data.CategoryId = update.CallbackData.Split()[1];
+            Data.CategoryId = update.Callback.SerializedData.Data;
             NextStep = new SpecifyPhoneStep(ChatId, BotClient, Data);
 
             var keyboard = new KeyboardMarkup(KeyboardTools.GetProductsButtonRow(Data.CategoryName, CommandName));
-            await EditMessageAsync(Message, update.CallbackMessageId, keyboard);
+            await EditMessageAsync(Message, update.Callback.MessageId, keyboard);
         }
 
         public SpecifyOrderProductsStep(long chatId, IBotClient client, OrderData data) : base(chatId, client, data)
