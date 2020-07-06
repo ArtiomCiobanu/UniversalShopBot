@@ -48,6 +48,12 @@ namespace ShopBot.Controllers
             {
                 BotUpdate update = ControllerBot.GetUpdate(input);
 
+                if (ControllerBot.ProcessedChats.Contains(update.ChatId))
+                {
+                    return;
+                }
+
+
                 DateTime? date = null;
 
                 if (update.EditDate != null)
@@ -63,7 +69,9 @@ namespace ShopBot.Controllers
                 int minutes = dateDifference.Minutes;
                 if (minutes <= 1)
                 {
+                    ControllerBot.ProcessedChats.Add(update.ChatId);
                     ControllerBot.FindCommandAndExecute(update);
+                    ControllerBot.ProcessedChats.Remove(update.ChatId);
                 }
                 else
                 {

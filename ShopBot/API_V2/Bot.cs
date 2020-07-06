@@ -19,6 +19,7 @@ namespace ShopBot.API_V2
         public IBotClient Client { get; protected set; }
         public List<IStep> StepPool { get; private set; }
         public IReadOnlyList<ICommand> Commands { get; private set; }
+        public List<long> ProcessedChats { get; set; }
 
         public void SetCommands(List<ICommand> commands)
         {
@@ -101,8 +102,10 @@ namespace ShopBot.API_V2
         public Bot(string token, string name)
         {
             Name = name;
-            StepPool = new List<IStep>();
             Token = token;
+
+            StepPool = new List<IStep>();
+            ProcessedChats = new List<long>();
 
             InitializeBotClient(token);
         }
@@ -114,8 +117,10 @@ namespace ShopBot.API_V2
         public Bot(string token, string name, string webHookUrl)
         {
             Name = name;
-            StepPool = new List<IStep>();
             Token = token;
+
+            StepPool = new List<IStep>();
+            ProcessedChats = new List<long>();
 
             InitializeBotClient(token);
 

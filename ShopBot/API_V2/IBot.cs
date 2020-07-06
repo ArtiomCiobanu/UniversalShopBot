@@ -18,6 +18,7 @@ namespace ShopBot.API_V2
 
         public IBotClient Client { get; }
         public List<IStep> StepPool { get; }
+        public List<long> ProcessedChats { get; set; }
         public IReadOnlyList<ICommand> Commands { get; }
 
         public void SetCommands(List<ICommand> commands);
