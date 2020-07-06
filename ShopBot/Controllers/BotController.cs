@@ -67,7 +67,7 @@ namespace ShopBot.Controllers
                 }
                 else
                 {
-                    //Послать сообщение, что команда была выполнена слишком давно
+                    ControllerBot.Client.SendTextMessageAsync(update.ChatId, "Время выполнения операции вышло. Повторите операцию заново.");
                 }
             });
 
